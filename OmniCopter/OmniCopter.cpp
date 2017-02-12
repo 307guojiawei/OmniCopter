@@ -2,12 +2,7 @@
 
 void OmniCopter::init()
 {
-	pinMode(ROLL_X,INPUT);
-	pinMode(ROLL_Y,INPUT);
-	pinMode(ROLL_Z,INPUT);
-	pinMode(MOVE_X,INPUT);
-	pinMode(MOVE_Y,INPUT);
-	pinMode(MOVE_Z,INPUT);
+	pinMode(2,INPUT);
 	pinMode(PROP_1,OUTPUT);
 	pinMode(PROP_2,OUTPUT);
 	pinMode(PROP_3,OUTPUT);
@@ -16,39 +11,38 @@ void OmniCopter::init()
 	pinMode(PROP_6,OUTPUT);
 	pinMode(PROP_7,OUTPUT);
 	pinMode(PROP_8,OUTPUT);
+
+
 	this->sensor.sensorInit();
 	this->escDriver.escInit();
 
 }
 
-void OmniCopter::getRawInput(struct Input_Raw* input)
+
+void OmniCopter::getRawInput(struct Input_Raw* input,int* RC1)
 {
+	input->Roll[0]=map(RC1[1],RC_MIN,RC_MAX,-input->Roll_Max[0],input->Roll_Max[0]);
+	input->Roll[1]=map(RC1[0],RC_MIN,RC_MAX,-input->Roll_Max[1],input->Roll_Max[1]);
+	input->Roll[2]=map(RC1[3],RC_MIN,RC_MAX,-input->Roll_Max[2],input->Roll_Max[2]);
+	input->Move[0]=map(RC1[4],RC_MIN,RC_MAX,-input->Move_Max[0],input->Roll_Max[0]);
+	input->Move[1]=map(RC1[5],RC_MIN,RC_MAX,-input->Move_Max[1],input->Roll_Max[1]);
+	input->Move[2]=map(RC1[2],RC_MIN,RC_MAX,-input->Move_Max[2],input->Roll_Max[2]);
 
 
-#ifdef MEGA_2560
-	unsigned char ucsr1b=UCSR1B;
-	UCSR1B&=0x7f;
-#endif
-#ifndef DEBUG_MODE
-	input->Roll[0]=(double)map(pulseIn(ROLL_X,1),RC_MIN,RC_MAX,-input->Roll_Max[0],input->Roll_Max[0]);
-	input->Roll[1]=(double)map(pulseIn(ROLL_Y,1),RC_MIN,RC_MAX,-input->Roll_Max[1],input->Roll_Max[1]);
-	input->Roll[2]=(double)map(pulseIn(ROLL_Z,1),RC_MIN,RC_MAX,-input->Roll_Max[2],input->Roll_Max[2]);
 
-	input->Move[0]=(double)map(pulseIn(MOVE_X,1),RC_MIN,RC_MAX,-input->Move_Max[0],input->Move_Max[0]);
-	input->Move[1]=(double)map(pulseIn(MOVE_Y,1),RC_MIN,RC_MAX,-input->Move_Max[1],input->Move_Max[1]);
-	input->Move[2]=(double)map(pulseIn(MOVE_Z,1),RC_MIN,RC_MAX,-input->Move_Max[2],input->Move_Max[2]);
-#endif
-#ifdef MEGA_2560
-	UCSR1B=ucsr1b;
-#endif
 
 
 }
+void OmniCopter::getRcValue(int* Rc)
+{
+	this->RC=Rc;
+}
 
-void OmniCopter::getRcInput()
+void OmniCopter::getRcInput(int* RC1)
 {
 	struct Input_Raw input;
-	getRawInput(&input);
+	getRawInput(&input,RC1);
+	this->input=input;
 	Input_Converted convertedInput;
 	convertedInput=convertedInput.getInputConverted(input);
 	this->convertedInput=convertedInput;
@@ -62,7 +56,7 @@ void OmniCopter::getRawSensorInput()
 void OmniCopter::getCompleteInput()
 {
 	this->getRawSensorInput();
-	this->getRcInput();
+	this->getRcInput(this->RC);
 	this->convertedInput=this->convertedInput.getCompleteInput(this->sensor.sensorRaw);
 }
 

@@ -10,7 +10,7 @@
  *      		应用层（Apps)：OmniCopter.ino
  *      			利用API构件飞控应用
  *      	-------------------------------------
- *      		事务处理层（TPS）：OmniCopter.h
+ *      		事务处理层（TPS）：OmniCopter.h和Log.h
  *      			负责正确初始化和处理各种组件，完成
  *      			飞控功能模块的处理事务，提供API接口
  *      			给应用
@@ -42,12 +42,15 @@
 #include "Output.h"		//电调驱动类
 
 
+
 //事务处理层主类
 class OmniCopter
 {
 	public:
 		Input_Converted convertedInput;
+		Input_Raw input;
 		Sensor sensor;
+		int* RC;
 
 		BodyRate desiredBodyRate;
 		DesireCondition desiredCondition;
@@ -61,6 +64,7 @@ class OmniCopter
 
 		void init();		//初始化接收机输入的端口
 		void getCompleteInput();		//获得完整的输入数据（平动和姿态均转换过),包括姿态数据，实际调用中只需调用此函数
+		void getRcValue(int*);
 		void getRawSensorInput();		//获得传感器输出的原始数据
 		void attitudeProcess();			//角度外环控制
 		void bodyRateProcess();			//角速率内环控制
@@ -68,8 +72,8 @@ class OmniCopter
 		void controlAllocateProcess();	//动力分配
 		void excute();					//执行电调驱动
 	private:
-		void getRawInput(Input_Raw* input);	//获得接收机输入的初始数据
-		void getRcInput();		//获得转换成四元数的接收机输入数据
+		void getRawInput(Input_Raw* input,int* RC1);	//获得接收机输入的初始数据
+		void getRcInput(int* RC1);		//获得转换成四元数的接收机输入数据
 };
 
 
