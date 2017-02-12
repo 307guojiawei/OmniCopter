@@ -1,9 +1,9 @@
 /*
  * Controller.h
  *
- *  Created on: 2017Äê2ÔÂ4ÈÕ
+ *  Created on: 2017å¹´2æœˆ4æ—¥
  *      Author: jiawei
- *      Description:ÓÃÓÚ¿ØÖÆ·ÉĞĞÆ÷×ËÌ¬ÒÔ¼°Î»ÖÃ
+ *      Description:ç”¨äºæ§åˆ¶é£è¡Œå™¨å§¿æ€ä»¥åŠä½ç½®
  */
 #include "OmniCopter.h"
 #ifndef CONTROLLER_H
@@ -11,38 +11,38 @@
 #include <MathExtend.h>
 
 
-class DesireCondition	//ÓÃÓÚ±£´æ¿ØÖÆÁ¿£¨Å¤¾ØºÍÁ¦£©£¬ÓÃÓÚ´«¸ø¿ØÖÆ·ÖÅäÄ£ĞÍ
+class DesireCondition	//ç”¨äºä¿å­˜æ§åˆ¶é‡ï¼ˆæ‰­çŸ©å’ŒåŠ›ï¼‰ï¼Œç”¨äºä¼ ç»™æ§åˆ¶åˆ†é…æ¨¡å‹
 {
 public:
-	double fDes[3];	//0-2·Ö±ğ¶ÔÓ¦x,y,z
-	double tDes[3];	//0-2·Ö±ğ¶ÔÓ¦roll,pitch,yaw
+	double fDes[3];	//0-2åˆ†åˆ«å¯¹åº”x,y,z
+	double tDes[3];	//0-2åˆ†åˆ«å¯¹åº”roll,pitch,yaw
 };
-class PropData			//ÓÃÓÚ±£´æÊä³öµÄÂİĞı½°¶¯Á¦Êı¾İ
+class PropData			//ç”¨äºä¿å­˜è¾“å‡ºçš„èºæ—‹æ¡¨åŠ¨åŠ›æ•°æ®
 {
 public:
-	double fProp[8];	//¶ÔÓ¦°Ë¸öµç»úÊä³ö¶¯Á¦Öµ
+	double fProp[8];	//å¯¹åº”å…«ä¸ªç”µæœºè¾“å‡ºåŠ¨åŠ›å€¼
 };
 
-class AttitudeController		//¿ØÖÆÆ÷£¬°üÀ¨×ËÌ¬½ÇµÄÍâ»·¿ØÖÆ,Êä³ö¦¸des¸øÄÚ»·¿ØÖÆÆ÷
+class AttitudeController		//æ§åˆ¶å™¨ï¼ŒåŒ…æ‹¬å§¿æ€è§’çš„å¤–ç¯æ§åˆ¶,è¾“å‡ºÎ©desç»™å†…ç¯æ§åˆ¶å™¨
 {
 private:
 	BodyRate desireCondition;
 public:
 	BodyRate getDesireBodyRate();
-	void process(Input_Converted desireInput,Sensor_Raw sensorData);	//¸ù¾İÊäÈëµÄÖ¸ÁîºÍ´«¸ĞÆ÷×ËÌ¬Êı¾İ¸üĞÂ²¢¿ØÖÆDesireConditionÖĞµÄÊı¾İ
+	void process(Input_Converted desireInput,Sensor_Raw sensorData);	//æ ¹æ®è¾“å…¥çš„æŒ‡ä»¤å’Œä¼ æ„Ÿå™¨å§¿æ€æ•°æ®æ›´æ–°å¹¶æ§åˆ¶DesireConditionä¸­çš„æ•°æ®
 
 };
 
-class BodyRateController	//½ÇËÙ¶È¿ØÖÆÆ÷£¬ÊäÈë¦¸des£¬Êä³ötdes¸ø¶¯Á¦·ÖÅäÄ£ĞÍ£¬ÄÚ»·¿ØÖÆÆ÷±ÈÍâ»·Ñ­»·´ÎÊı¸ü¶à
+class BodyRateController	//è§’é€Ÿåº¦æ§åˆ¶å™¨ï¼Œè¾“å…¥Î©desï¼Œè¾“å‡ºtdesç»™åŠ¨åŠ›åˆ†é…æ¨¡å‹ï¼Œå†…ç¯æ§åˆ¶å™¨æ¯”å¤–ç¯å¾ªç¯æ¬¡æ•°æ›´å¤š
 {
 private:
 	DesireCondition desireTorque;
 public:
-	DesireCondition getDesireTorque();	//»ñµÃtdes£¬ĞèÒª¼ÌĞø´«ÈëÎ»ÖÃ¿ØÖÆÆ÷Íê³ÉÎ»ÖÃ¿ØÖÆ²Ù×÷
-	void process(BodyRate desireBodyRate,Sensor_Raw sensorData);	//¸ù¾İÊäÈëµÄ½ÇËÙ¶ÈºÍ´«¸ĞÆ÷Êı¾İ½âËãtdes
+	DesireCondition getDesireTorque();	//è·å¾—tdesï¼Œéœ€è¦ç»§ç»­ä¼ å…¥ä½ç½®æ§åˆ¶å™¨å®Œæˆä½ç½®æ§åˆ¶æ“ä½œ
+	void process(BodyRate desireBodyRate,Sensor_Raw sensorData);	//æ ¹æ®è¾“å…¥çš„è§’é€Ÿåº¦å’Œä¼ æ„Ÿå™¨æ•°æ®è§£ç®—tdes
 };
 
-class PositionController		//Î»ÖÃ¿ØÖÆÆ÷£¬Í¨¹ıÖ¸ÁîºÍ´«¸ĞÆ÷Êı¾İ½«½á¹ûÌí¼Óµ½´«ÈëµÄDesireConditionÖĞºó´«Èë¶¯Á¦·ÖÅäÄ£ĞÍ
+class PositionController		//ä½ç½®æ§åˆ¶å™¨ï¼Œé€šè¿‡æŒ‡ä»¤å’Œä¼ æ„Ÿå™¨æ•°æ®å°†ç»“æœæ·»åŠ åˆ°ä¼ å…¥çš„DesireConditionä¸­åä¼ å…¥åŠ¨åŠ›åˆ†é…æ¨¡å‹
 {
 private:
 	DesireCondition desireCondition;
@@ -50,13 +50,13 @@ public:
 	DesireCondition getDesireCondition();
 	void process(Input_Converted input,Sensor_Raw sensorData,DesireCondition desireInput);
 };
-class ControlAllocator	//¶¯Á¦·ÖÅäÄ£ĞÍ£¬ÓÃÓÚ½«DesireCondition×ª»»ÎªPropData
+class ControlAllocator	//åŠ¨åŠ›åˆ†é…æ¨¡å‹ï¼Œç”¨äºå°†DesireConditionè½¬æ¢ä¸ºPropData
 {
 private:
 	PropData propData;
 public:
 	PropData getPropData();
-	void process(DesireCondition desireCondition);	//¸ù¾İÊäÈëµÄDesireConditionÊä³öPropData
+	void process(DesireCondition desireCondition);	//æ ¹æ®è¾“å…¥çš„DesireConditionè¾“å‡ºPropData
 };
 
 

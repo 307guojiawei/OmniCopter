@@ -1,7 +1,7 @@
 /*
  * Controller.cpp
  *
- *  Created on: 2017Äê2ÔÂ6ÈÕ
+ *  Created on: 2017å¹´2æœˆ6æ—¥
  *      Author: jiawei
  */
 #include "OmniCopter.h"
@@ -14,7 +14,7 @@ BodyRate AttitudeController::getDesireBodyRate()
 void AttitudeController::process(Input_Converted desireInput,Sensor_Raw sensorData)
 {
 	Quaternion qErr=sensorData.bodyQuaternion.reverse()*desireInput.Roll;	//18
-	BodyRate desireBodyRate,ff;	//19£¬ffÎª20
+	BodyRate desireBodyRate,ff;	//19ï¼Œffä¸º20
 	Quaternion qX;
 	qX.q[0]=0;
 	qX.q[1]=sensorData.bodyRate.rollRate;

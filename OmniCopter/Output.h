@@ -1,16 +1,16 @@
 /*
  * Output.h
  *
- *  Created on: 2017Äê2ÔÂ6ÈÕ
+ *  Created on: 2017å¹´2æœˆ6æ—¥
  *      Author: jiawei
- *      Description:±¾¿âÓÃÓÚ½âÎöPropData²¢Çı¶¯µçµ÷Íê³ÉÏàÓ¦²Ù×÷
+ *      Description:æœ¬åº“ç”¨äºè§£æPropDataå¹¶é©±åŠ¨ç”µè°ƒå®Œæˆç›¸åº”æ“ä½œ
  */
 
 #ifndef OUTPUT_H
 #define OUTPUT_H
 #include <Servo.h>
 
-class EscDriver	//µçµ÷Çı¶¯Àà
+class EscDriver	//ç”µè°ƒé©±åŠ¨ç±»
 {
 private:
 	PropData propData;
@@ -23,10 +23,10 @@ private:
 	Servo prop7;
 	Servo prop8;
 public:
-	void escInit();			//µçµ÷³õÊ¼»¯
-	PropData getPropData();	//»ñÈ¡propData
-	void setPropData(PropData propData);	//ÉèÖÃpropData
-	void excute();			//Ö´ĞĞpropData£¬Çı¶¯µçµ÷
+	void escInit();			//ç”µè°ƒåˆå§‹åŒ–
+	PropData getPropData();	//è·å–propData
+	void setPropData(PropData propData);	//è®¾ç½®propData
+	void excute();			//æ‰§è¡ŒpropDataï¼Œé©±åŠ¨ç”µè°ƒ
 	void excute(PropData propData);
 };
 

@@ -1,7 +1,7 @@
 /*
  * Output.cpp
  *
- *  Created on: 2017Äê2ÔÂ6ÈÕ
+ *  Created on: 2017å¹´2æœˆ6æ—¥
  *      Author: jiawei
  */
 #include "OmniCopter.h"

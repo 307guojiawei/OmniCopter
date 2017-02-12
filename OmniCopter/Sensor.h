@@ -1,10 +1,10 @@
 /*
  * Sensor.h
  *
- *  Created on: 2017Äê2ÔÂ4ÈÕ
+ *  Created on: 2017å¹´2æœˆ4æ—¥
  *      Author: jiawei
- *      Description:JY901B×ËÌ¬´«¸ĞÆ÷µÄÇı¶¯ÒÔ¼°×ËÌ¬Êı¾İµÄÊä³ö¡£
- *      				Õ¼ÓÃ´®¿Ú1
+ *      Description:JY901Bå§¿æ€ä¼ æ„Ÿå™¨çš„é©±åŠ¨ä»¥åŠå§¿æ€æ•°æ®çš„è¾“å‡ºã€‚
+ *      				å ç”¨ä¸²å£1
  */
 #include "OmniCopter.h"
 #include "JY901.h"
@@ -14,10 +14,10 @@
 class Sensor_Raw
 {
 public:
-	Quaternion bodyQuaternion;	//×ËÌ¬ËÄÔªÊı
-	Angle bodyAngle;	//×ËÌ¬½Ç¶È
-	BodyRate bodyRate;	//×ËÌ¬½ÇËÙ¶È
-	double height;		//¸ß¶È
+	Quaternion bodyQuaternion;	//å§¿æ€å››å…ƒæ•°
+	Angle bodyAngle;	//å§¿æ€è§’åº¦
+	BodyRate bodyRate;	//å§¿æ€è§’é€Ÿåº¦
+	double height;		//é«˜åº¦
 };
 
 class Sensor
@@ -25,9 +25,9 @@ class Sensor
 public:
 	Sensor_Raw sensorRaw;
 	CJY901 JY901;
-	void getSensorData();	//»ñÈ¡´«¸ĞÆ÷Êı¾İ£¬ĞèÒªÇı¶¯´®¿Ú
+	void getSensorData();	//è·å–ä¼ æ„Ÿå™¨æ•°æ®ï¼Œéœ€è¦é©±åŠ¨ä¸²å£
 	void getSensorRate();
-	void sensorInit();		//´«¸ĞÆ÷³õÊ¼»¯£¬°üÀ¨²ÎÊıÉè¶¨ºÍ´®¿ÚµÄ³õÊ¼»¯
+	void sensorInit();		//ä¼ æ„Ÿå™¨åˆå§‹åŒ–ï¼ŒåŒ…æ‹¬å‚æ•°è®¾å®šå’Œä¸²å£çš„åˆå§‹åŒ–
 };
 
 

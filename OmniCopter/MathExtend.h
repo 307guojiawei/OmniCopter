@@ -1,30 +1,30 @@
 /*
  * MathExtend.h
  *
- *  Created on: 2017Äê2ÔÂ3ÈÕ
+ *  Created on: 2017å¹´2æœˆ3æ—¥
  *      Author: jiawei
- *      description:ÍØ³äÊıÑ§¿â£¬ÒıÈëËÄÔªÊıÒÔ¼°Å·À­½Ç¼°ÆäÔËËã·¨Ôò
+ *      description:æ‹“å……æ•°å­¦åº“ï¼Œå¼•å…¥å››å…ƒæ•°ä»¥åŠæ¬§æ‹‰è§’åŠå…¶è¿ç®—æ³•åˆ™
  */
 
 #include "OmniCopter.h"
 #ifndef MATHEXTEND_H
 #define MATHEXTEND_H
 
-//ÊıÑ§¶¨Òå
-struct Angle	//½Ç¶È¶¨Òå
+//æ•°å­¦å®šä¹‰
+struct Angle	//è§’åº¦å®šä¹‰
 {
-	double roll;	//¹ö×ª
-	double pitch;	//¸©Ñö
-	double yaw;		//Æ«º½
+	double roll;	//æ»šè½¬
+	double pitch;	//ä¿¯ä»°
+	double yaw;		//åèˆª
 };
-struct BodyRate	//½ÇËÙ¶È¶¨Òå
+struct BodyRate	//è§’é€Ÿåº¦å®šä¹‰
 {
-	double rollRate;	//¹ö×ª½ÇËÙ¶È
-	double pitchRate;	//¸©Ñö½ÇËÙ¶È
-	double yawRate;		//Æ«º½½ÇËÙ¶È
+	double rollRate;	//æ»šè½¬è§’é€Ÿåº¦
+	double pitchRate;	//ä¿¯ä»°è§’é€Ÿåº¦
+	double yawRate;		//åèˆªè§’é€Ÿåº¦
 };
 
-class Quaternion	//ËÄÔªÊı¶¨Òå
+class Quaternion	//å››å…ƒæ•°å®šä¹‰
 {
 public:
 	double q[4];
@@ -46,7 +46,7 @@ public:
 		ans.q[3]=this->q[3]+b.q[3];
 		return ans;
 	}
-	Quaternion operator * (Quaternion &b)	//ËÄÔªÊıÏà³Ë
+	Quaternion operator * (Quaternion &b)	//å››å…ƒæ•°ç›¸ä¹˜
 	{
 		Quaternion ans;
 		ans.q[0]=this->q[0]*b.q[0]-(b.q[1]*this->q[1]+b.q[2]*this->q[2]+b.q[3]*this->q[3]);
@@ -63,9 +63,9 @@ public:
 		ans.q[3]=ax*by-ay*bx+a0*bz+b0*az;
 		return ans;
 	}
-	Quaternion constantMutiply(double s);	//ËÄÔªÊıÊı³Ë
+	Quaternion constantMutiply(double s);	//å››å…ƒæ•°æ•°ä¹˜
 	Quaternion reverse();
-	Quaternion createFromAngle(struct Angle angle);	//´ÓÅ·À­½Ç½¨Á¢ËÄÔªÊı
+	Quaternion createFromAngle(struct Angle angle);	//ä»æ¬§æ‹‰è§’å»ºç«‹å››å…ƒæ•°
 };
 
 #endif

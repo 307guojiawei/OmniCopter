@@ -1,34 +1,34 @@
 /*
  * Input.h
  *
- *  Created on: 2017Äê2ÔÂ3ÈÕ
+ *  Created on: 2017å¹´2æœˆ3æ—¥
  *      Author: jiawei
- *      description:·É¿Ø´Ó½ÓÊÕ»ú²¿·Ö¶ÁÈë¿ØÖÆÖ¸Áî
- *      	Input_Raw:±£´æ´Ó½ÓÊÕ»ú¶ÁÈëµÄÔ­Ê¼Êı¾İ
- *      	Input_Converted:±£´æ×ª»»¹ıµÄ¿ØÖÆÊı¾İ£¬ËÄÔªÊı¸ñÊ½
+ *      description:é£æ§ä»æ¥æ”¶æœºéƒ¨åˆ†è¯»å…¥æ§åˆ¶æŒ‡ä»¤
+ *      	Input_Raw:ä¿å­˜ä»æ¥æ”¶æœºè¯»å…¥çš„åŸå§‹æ•°æ®
+ *      	Input_Converted:ä¿å­˜è½¬æ¢è¿‡çš„æ§åˆ¶æ•°æ®ï¼Œå››å…ƒæ•°æ ¼å¼
  */
 #include "OmniCopter.h"
 #include "Sensor.h"
 #ifndef INPUT_H
 #define INPUT_H
-//½á¹¹Ìå¶¨Òå
-struct Input_Raw	//½ÓÊÕ»úÊäÈëµÄÔ­Ê¼Êı¾İ
+//ç»“æ„ä½“å®šä¹‰
+struct Input_Raw	//æ¥æ”¶æœºè¾“å…¥çš„åŸå§‹æ•°æ®
 {
-	int Roll_Max[3]={180,180,180};	//²âÁ¿Ê±×ª»»µÄ×î´ó·¶Î§-Roll_MaxÖÁRoll_Max
-	int Move_Max[3]={10,10,10};	//²âÁ¿Ê±Î»ÒÆ×ª»»µÄ×î´ó·¶Î§
+	int Roll_Max[3]={180,180,180};	//æµ‹é‡æ—¶è½¬æ¢çš„æœ€å¤§èŒƒå›´-Roll_Maxè‡³Roll_Max
+	int Move_Max[3]={10,10,10};	//æµ‹é‡æ—¶ä½ç§»è½¬æ¢çš„æœ€å¤§èŒƒå›´
 	double Roll[3];
 	double Move[3];
 };
 
-class Input_Converted	//×ª»»¹ıµÄ½ÓÊÕ»úÊı¾İ£¬ÎªËÄÔªÊı¸ñÊ½
+class Input_Converted	//è½¬æ¢è¿‡çš„æ¥æ”¶æœºæ•°æ®ï¼Œä¸ºå››å…ƒæ•°æ ¼å¼
 {
 	public:
 
 		double Move[3];
-		//×ËÌ¬½Ç¶È²¿·ÖµÄ×ª»»£¬´Ó½Ç¶È×ª»»ÎªËÄÔªÊı
+		//å§¿æ€è§’åº¦éƒ¨åˆ†çš„è½¬æ¢ï¼Œä»è§’åº¦è½¬æ¢ä¸ºå››å…ƒæ•°
 		Quaternion Roll;
-		Input_Converted getInputConverted(Input_Raw rawInput);//×¢Òâ£¬´Ë´¦Ö»×ª»»½Ç¶È£¬Æ½¶¯Êı¾İĞèÒª½áºÏ×ËÌ¬Çó½â
-		Input_Converted getCompleteInput(Sensor_Raw sensorRaw);//»ñµÃ½Ç¶ÈºÍÆ½¶¯¶¼×ª»»¹ıµÄÊı¾İ£¬¿ÉÒÔËÍÈë¿ØÖÆ»·¡£
+		Input_Converted getInputConverted(Input_Raw rawInput);//æ³¨æ„ï¼Œæ­¤å¤„åªè½¬æ¢è§’åº¦ï¼Œå¹³åŠ¨æ•°æ®éœ€è¦ç»“åˆå§¿æ€æ±‚è§£
+		Input_Converted getCompleteInput(Sensor_Raw sensorRaw);//è·å¾—è§’åº¦å’Œå¹³åŠ¨éƒ½è½¬æ¢è¿‡çš„æ•°æ®ï¼Œå¯ä»¥é€å…¥æ§åˆ¶ç¯ã€‚
 };
 
 

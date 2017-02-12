@@ -1,34 +1,34 @@
 /*
  * Config.h
  *
- *  Created on: 2017Äê2ÔÂ10ÈÕ
+ *  Created on: 2017å¹´2æœˆ10æ—¥
  *      Author: jiawei
- *      Description:±£´æ¸÷ÖÖµ÷ÊÔ²ÎÊý
+ *      Description:ä¿å­˜å„ç§è°ƒè¯•å‚æ•°
  */
 
 #ifndef LIBRARIES_OMNICOPTER_CONFIG_H_
 #define LIBRARIES_OMNICOPTER_CONFIG_H_
 /*
- * RC½ÓÏß¶¨Òå
- * 1	Éý½µ
- * 2	¸±Òí
- * 3	ÓÍÃÅ
- * 4	·½Ïò
+ * RCæŽ¥çº¿å®šä¹‰
+ * 1	å‡é™
+ * 2	å‰¯ç¿¼
+ * 3	æ²¹é—¨
+ * 4	æ–¹å‘
  * 5	aux1
  * 6	aux2
  */
-//³£Á¿¶¨Òå
-//#define MEGA_2560	//Ä¿±êµ¥Æ¬»ú
-#define DEBUG_MODE	//µ÷ÊÔÄ£Ê½
+//å¸¸é‡å®šä¹‰
+//#define MEGA_2560	//ç›®æ ‡å•ç‰‡æœº
+#define DEBUG_MODE	//è°ƒè¯•æ¨¡å¼
 
-#define ROLL_X 2	//xÖáÐý×ªÊäÈëÁ¿
-#define ROLL_Y 3	//yÖáÐý×ªÊäÈëÁ¿
-#define ROLL_Z 4	//zÖáÐý×ªÊäÈëÁ¿
-#define MOVE_X 5	//xÖáÆ½¶¯ÊäÈëÁ¿
-#define MOVE_Y 6	//yÖáÆ½¶¯ÊäÈëÁ¿
-#define MOVE_Z 7	//zÖáÆ½¶¯ÊäÈëÁ¿
-#define PPM_IN 0	//ppmÒ£¿ØÐÅºÅÊäÈë,±¾ÖµÎªÖÐ¶ÏÒý½Å¶ÔÓ¦µÄÖÐ¶ÏÐòºÅ
-#define PROP_1 10	//µç»úÊä³ö¶Ë¿Ú
+#define ROLL_X 2	//xè½´æ—‹è½¬è¾“å…¥é‡
+#define ROLL_Y 3	//yè½´æ—‹è½¬è¾“å…¥é‡
+#define ROLL_Z 4	//zè½´æ—‹è½¬è¾“å…¥é‡
+#define MOVE_X 5	//xè½´å¹³åŠ¨è¾“å…¥é‡
+#define MOVE_Y 6	//yè½´å¹³åŠ¨è¾“å…¥é‡
+#define MOVE_Z 7	//zè½´å¹³åŠ¨è¾“å…¥é‡
+#define PPM_IN 0	//ppmé¥æŽ§ä¿¡å·è¾“å…¥,æœ¬å€¼ä¸ºä¸­æ–­å¼•è„šå¯¹åº”çš„ä¸­æ–­åºå·
+#define PROP_1 10	//ç”µæœºè¾“å‡ºç«¯å£
 #define PROP_2 11
 #define PROP_3 12
 #define PROP_4 13
@@ -36,22 +36,22 @@
 #define PROP_6 15
 #define PROP_7 16
 #define PROP_8 17
-#define PERCISION 1000	//¸¡µãÓëÕûÐÍ×ª»»¾«È·¶È
+#define PERCISION 1000	//æµ®ç‚¹ä¸Žæ•´åž‹è½¬æ¢ç²¾ç¡®åº¦
 
-//±äÁ¿¶¨Òå
-#define RC_MIN 1088	//½ÓÊÕ»úÊäÈëµÄÂö¿í×îµÍÖµ
-#define RC_MAX 1888	//½ÓÊÕ»úÊäÈëµÄÂö¿í×î¸ßÖµ
-#define ESC_MIN 1088	//µçµ÷Êä³öµÄ×îµÍÖµ
-#define ESC_MAX 1888	//µçµ÷Êä³öµÄ×î¸ßÖµ
-#define ESC_MID (ESC_MIN+ESC_MAX)/2	//µçµ÷Êä³öµÄÖÐµãÖµ
-#define F_PORP_MIN -10		//ÔËËãÊä³öµÄÅ¤¾Ø×îÐ¡Öµ
-#define F_PROP_MAX 10		//ÔËËãÊä³öµÄÅ¤¾Ø×î´óÖµ
+//å˜é‡å®šä¹‰
+#define RC_MIN 1088	//æŽ¥æ”¶æœºè¾“å…¥çš„è„‰å®½æœ€ä½Žå€¼
+#define RC_MAX 1888	//æŽ¥æ”¶æœºè¾“å…¥çš„è„‰å®½æœ€é«˜å€¼
+#define ESC_MIN 1088	//ç”µè°ƒè¾“å‡ºçš„æœ€ä½Žå€¼
+#define ESC_MAX 1888	//ç”µè°ƒè¾“å‡ºçš„æœ€é«˜å€¼
+#define ESC_MID (ESC_MIN+ESC_MAX)/2	//ç”µè°ƒè¾“å‡ºçš„ä¸­ç‚¹å€¼
+#define F_PORP_MIN -10		//è¿ç®—è¾“å‡ºçš„æ‰­çŸ©æœ€å°å€¼
+#define F_PROP_MAX 10		//è¿ç®—è¾“å‡ºçš„æ‰­çŸ©æœ€å¤§å€¼
 
-//¿ØÖÆ²ÎÊý¶¨Òå
-#define TATT 1		//³öÏÖÔÚ¹«Ê½19ÖÐ£¬Íâ»·Ê±¼ä³£Êý£¬µ¹Êý¿´×÷p²ÎÊý
-#define	TRATE 1		//³öÏÖÔÚ¹«Ê½21ÖÐ£¬ÄÚ»·Ê±¼ä³£Êý£¬µ¹Êý¿´×÷p²ÎÊý
-#define J 1			//³öÏÖÔÚ¹«Ê½21ÖÐ£¬×ª¶¯¹ßÁ¿
-#define INNER_OUTER_RATIO 10	//¿ØÖÆ»·ÖÐÄÚÍâ»·ÔËËã±È
+//æŽ§åˆ¶å‚æ•°å®šä¹‰
+#define TATT 1		//å‡ºçŽ°åœ¨å…¬å¼19ä¸­ï¼Œå¤–çŽ¯æ—¶é—´å¸¸æ•°ï¼Œå€’æ•°çœ‹ä½œpå‚æ•°
+#define	TRATE 1		//å‡ºçŽ°åœ¨å…¬å¼21ä¸­ï¼Œå†…çŽ¯æ—¶é—´å¸¸æ•°ï¼Œå€’æ•°çœ‹ä½œpå‚æ•°
+#define J 1			//å‡ºçŽ°åœ¨å…¬å¼21ä¸­ï¼Œè½¬åŠ¨æƒ¯é‡
+#define INNER_OUTER_RATIO 10	//æŽ§åˆ¶çŽ¯ä¸­å†…å¤–çŽ¯è¿ç®—æ¯”
 
 
 

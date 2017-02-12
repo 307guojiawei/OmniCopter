@@ -1,17 +1,17 @@
 /*
  * Sensor.cpp
  *
- *  Created on: 2017Äê2ÔÂ4ÈÕ
+ *  Created on: 2017å¹´2æœˆ4æ—¥
  *      Author: jiawei
  */
 
 #include "Omnicopter.h"
 
-void Sensor::sensorInit()	//´«¸ĞÆ÷³õÊ¼»¯
+void Sensor::sensorInit()	//ä¼ æ„Ÿå™¨åˆå§‹åŒ–
 {
 	JY901.StartIIC();
 }
-void Sensor::getSensorData()	//»ñÈ¡´«¸ĞÆ÷Êı¾İ
+void Sensor::getSensorData()	//è·å–ä¼ æ„Ÿå™¨æ•°æ®
 {
 	Sensor_Raw sensorData;
 	JY901.GetGyro();

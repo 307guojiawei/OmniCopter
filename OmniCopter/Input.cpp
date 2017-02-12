@@ -20,7 +20,7 @@ Input_Converted Input_Converted::getCompleteInput(Sensor_Raw sensorRaw)
 {
 	Input_Converted ans;
 	ans.Roll=this->Roll;
-	//Æ½¶¯µÄ´óµØ×ø±ê->ËæÌå×ø±ê×ª»»
+	//å¹³åŠ¨çš„å¤§åœ°åæ ‡->éšä½“åæ ‡è½¬æ¢
 	double fx=this->Move[0];
 	double fy=this->Move[1];
 	double fz=this->Move[2];

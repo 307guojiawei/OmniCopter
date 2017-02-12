@@ -1,7 +1,7 @@
 /*
  * Log.h
  *
- *  Created on: 2017Äê2ÔÂ12ÈÕ
+ *  Created on: 2017å¹´2æœˆ12æ—¥
  *      Author: jiawei
  */
 
@@ -12,16 +12,16 @@
 class Log
 {
 public:
-	void log(char* message,double value);	//¿ØÖÆÌ¨Êä³öĞÅÏ¢£¬°üÀ¨¼üÖµ¶Ô£ºĞÅÏ¢ºÍÖµ£¨doubleĞÍ£©
-	void setDebugMode(bool mode);	//ÉèÖÃµ÷ÊÔÄ£Ê½£¨trueÎª¿ªÆôµ÷ÊÔÄ£Ê½)
-	void setFreq(int freq);					//ÉèÖÃÊä³öÆµÂÊ(¸ô¶àÉÙ´Î¿ªÊ¼Êä³ö£©
-	void showRcInput(OmniCopter omniCopter);				//Êä³örcinputµÄÖµ
-	void showSensor(OmniCopter omniCopter);				//Êä³ö´«¸ĞÆ÷µÄÖµ
-	void showEscOutput(OmniCopter omniCopter);			//Êä³ö¿ØÖÆµçµ÷µÄpwmÂö¿í
-	void showForce(OmniCopter omniCopter);				//Êä³ö¿ØÖÆÁ¦ºÍÁ¦¾Ø
-	void showFreq(OmniCopter omniCopter);				//Êä³öÍâ»·¿ØÖÆÆµÂÊ
+	void log(char* message,double value);	//æ§åˆ¶å°è¾“å‡ºä¿¡æ¯ï¼ŒåŒ…æ‹¬é”®å€¼å¯¹ï¼šä¿¡æ¯å’Œå€¼ï¼ˆdoubleå‹ï¼‰
+	void setDebugMode(bool mode);	//è®¾ç½®è°ƒè¯•æ¨¡å¼ï¼ˆtrueä¸ºå¼€å¯è°ƒè¯•æ¨¡å¼)
+	void setFreq(int freq);					//è®¾ç½®è¾“å‡ºé¢‘ç‡(éš”å¤šå°‘æ¬¡å¼€å§‹è¾“å‡ºï¼‰
+	void showRcInput(OmniCopter omniCopter);				//è¾“å‡ºrcinputçš„å€¼
+	void showSensor(OmniCopter omniCopter);				//è¾“å‡ºä¼ æ„Ÿå™¨çš„å€¼
+	void showEscOutput(OmniCopter omniCopter);			//è¾“å‡ºæ§åˆ¶ç”µè°ƒçš„pwmè„‰å®½
+	void showForce(OmniCopter omniCopter);				//è¾“å‡ºæ§åˆ¶åŠ›å’ŒåŠ›çŸ©
+	void showFreq(OmniCopter omniCopter);				//è¾“å‡ºå¤–ç¯æ§åˆ¶é¢‘ç‡
 	void init();
-	void oneLoop();					//¼ÇÂ¼Ò»´ÎÑ­»·µÄ×´Ì¬
+	void oneLoop();					//è®°å½•ä¸€æ¬¡å¾ªç¯çš„çŠ¶æ€
 private:
 	bool debugEnable=true;
 	bool showEnable=false;
