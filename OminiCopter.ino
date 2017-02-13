@@ -45,6 +45,7 @@ void loop()
 	omniCopter.getCompleteInput();
 
 	loger.showRcInput(omniCopter);
+	loger.showSensor(omniCopter);
 
 	omniCopter.attitudeProcess();
 	for(int i=0;i<INNER_OUTER_RATIO;i++)
@@ -57,5 +58,7 @@ void loop()
 		omniCopter.excute();
 	}
 
+	loger.showForce(omniCopter);
+	loger.showEscOutput(omniCopter);
 	loger.oneLoop();
 }

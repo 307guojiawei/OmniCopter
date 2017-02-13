@@ -36,6 +36,7 @@ void Log::oneLoop()
 	{
 		showEnable=true;
 		showTime=0;
+		Serial.println("-----------------------------------");
 	}else
 	{
 		showEnable=false;
@@ -74,5 +75,51 @@ void Log::showFreq(OmniCopter o)
 
 	}
 }
+void Log::showSensor(OmniCopter o)
+{
+	if(!debugEnable)return;
+	if(debugEnable&&showEnable)
+	{
+		Serial.print("Angle: ");
+		Serial.print(o.sensor.sensorRaw.bodyAngle.roll);Serial.print(" ");
+		Serial.print(o.sensor.sensorRaw.bodyAngle.pitch);Serial.print(" ");
+		Serial.print(o.sensor.sensorRaw.bodyAngle.yaw);Serial.println(" ");
+		Serial.print("Quaternion:");
+		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[0]);Serial.print(" ");
+		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[1]);Serial.print(" ");
+		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[2]);Serial.print(" ");
+		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[3]);Serial.println(" ");
+	}
+}
+void Log::showForce(OmniCopter o)
+{
+	if(!debugEnable)return;
+	if(debugEnable&&showEnable)
+	{
+		Serial.print("Force&Torque: ");
+		Serial.print(o.desiredCondition.fDes[0]);Serial.print(" ");
+		Serial.print(o.desiredCondition.fDes[1]);Serial.print(" ");
+		Serial.print(o.desiredCondition.fDes[2]);Serial.print(" ");
+		Serial.print(o.desiredCondition.tDes[0]);Serial.print(" ");
+		Serial.print(o.desiredCondition.tDes[1]);Serial.print(" ");
+		Serial.print(o.desiredCondition.tDes[2]);Serial.println(" ");
 
+	}
+}
 
+void Log::showEscOutput(OmniCopter o)
+{
+	if(!debugEnable)return;
+	if(debugEnable&&showEnable)
+	{
+		Serial.print("ESC: ");
+		Serial.print(o.escDriver.getPropData().fProp[0]);Serial.print(" ");
+		Serial.print(o.escDriver.getPropData().fProp[1]);Serial.print(" ");
+		Serial.print(o.escDriver.getPropData().fProp[2]);Serial.print(" ");
+		Serial.print(o.escDriver.getPropData().fProp[3]);Serial.print(" ");
+		Serial.print(o.escDriver.getPropData().fProp[4]);Serial.print(" ");
+		Serial.print(o.escDriver.getPropData().fProp[5]);Serial.print(" ");
+		Serial.print(o.escDriver.getPropData().fProp[6]);Serial.print(" ");
+		Serial.print(o.escDriver.getPropData().fProp[7]);Serial.println(" ");
+	}
+}

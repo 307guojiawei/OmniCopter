@@ -23,7 +23,7 @@ public:
 	void init();
 	void oneLoop();					//记录一次循环的状态
 private:
-	bool debugEnable=true;
+	bool debugEnable=false;
 	bool showEnable=false;
 	int showTime=0;
 	int showF=10;

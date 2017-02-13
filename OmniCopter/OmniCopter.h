@@ -1,49 +1,49 @@
 /*
  * OmniCopter.h
  *
- *  Created on: 2017Äê2ÔÂ3ÈÕ
+ *  Created on: 2017å¹´2æœˆ3æ—¥
  *      Author: jiawei
- *      description:×÷ÎªÏîÄ¿µÄÍ¨ÓÃÍ·ÎÄ¼þ£¬¶¨ÒåÁË·É¿ØËùÐèµÄ³£Á¿±äÁ¿ÒÔ¼°»ù±¾µÄ½á¹¹Ìå
+ *      description:ä½œä¸ºé¡¹ç›®çš„é€šç”¨å¤´æ–‡ä»¶ï¼Œå®šä¹‰äº†é£žæŽ§æ‰€éœ€çš„å¸¸é‡å˜é‡ä»¥åŠåŸºæœ¬çš„ç»“æž„ä½“
  *
- *      OmniCopter·É¿ØÏµÍ³Èý²ã¿ØÖÆÄ£ÐÍ£º
+ *      OmniCopteré£žæŽ§ç³»ç»Ÿä¸‰å±‚æŽ§åˆ¶æ¨¡åž‹ï¼š
  *      	-------------------------------------
- *      		Ó¦ÓÃ²ã£¨Apps)£ºOmniCopter.ino
- *      			ÀûÓÃAPI¹¹¼þ·É¿ØÓ¦ÓÃ
+ *      		åº”ç”¨å±‚ï¼ˆApps)ï¼šOmniCopter.ino
+ *      			åˆ©ç”¨APIæž„ä»¶é£žæŽ§åº”ç”¨
  *      	-------------------------------------
- *      		ÊÂÎñ´¦Àí²ã£¨TPS£©£ºOmniCopter.hºÍLog.h
- *      			¸ºÔðÕýÈ·³õÊ¼»¯ºÍ´¦Àí¸÷ÖÖ×é¼þ£¬Íê³É
- *      			·É¿Ø¹¦ÄÜÄ£¿éµÄ´¦ÀíÊÂÎñ£¬Ìá¹©API½Ó¿Ú
- *      			¸øÓ¦ÓÃ
+ *      		äº‹åŠ¡å¤„ç†å±‚ï¼ˆTPSï¼‰ï¼šOmniCopter.hå’ŒLog.h
+ *      			è´Ÿè´£æ­£ç¡®åˆå§‹åŒ–å’Œå¤„ç†å„ç§ç»„ä»¶ï¼Œå®Œæˆ
+ *      			é£žæŽ§åŠŸèƒ½æ¨¡å—çš„å¤„ç†äº‹åŠ¡ï¼Œæä¾›APIæŽ¥å£
+ *      			ç»™åº”ç”¨
  *      	-------------------------------------
- *      		Êý¾Ý´¦Àí²ã£¨DPS£©£ºÆäÓàÎÄ¼þ
- *      			¸ºÔðµ×²ãÓ²¼þ³õÊ¼»¯£¬Êý¾Ý²É¼¯¡¢ÂË²¨¡¢
- *      			¿ØÖÆºÍÇý¶¯£¬Éæ¼°µ½µ×²ãÊäÈëÊä³öµÄ°ü
- *      			À¨Sensor,InputºÍOutput
+ *      		æ•°æ®å¤„ç†å±‚ï¼ˆDPSï¼‰ï¼šå…¶ä½™æ–‡ä»¶
+ *      			è´Ÿè´£åº•å±‚ç¡¬ä»¶åˆå§‹åŒ–ï¼Œæ•°æ®é‡‡é›†ã€æ»¤æ³¢ã€
+ *      			æŽ§åˆ¶å’Œé©±åŠ¨ï¼Œæ¶‰åŠåˆ°åº•å±‚è¾“å…¥è¾“å‡ºçš„åŒ…
+ *      			æ‹¬Sensor,Inputå’ŒOutput
  *
- *      OmniCopter·É¿ØÏµÍ³¶Ë¿ÚÕ¼ÓÃÇé¿ö£º
- *      	Í¨ÐÅ¶Ë¿Ú£º
- *      		Serial0:µ÷ÊÔºÍÓëÉÏÎ»»úÍ¨ÐÅ
- *      		SCLºÍSDA:ÏìÓ¦¹ßµ¼ÏµÍ³Êý¾Ý
- *      	Êý×ÖÊäÈë:
- *      		6¸öpwmÊäÈëÍ¨µÀ£¬·Ö±ð¶ÔÓ¦Æ½¶¯ºÍ×ª¶¯ÈýÖá
- *      	Êý×ÖÊä³ö£º
- *      		8¸öpwmÊä³öÍ¨µÀ£¬·Ö±ð¶ÔÓ¦°Ë¸öµç»úpwmÊä³ö
+ *      OmniCopteré£žæŽ§ç³»ç»Ÿç«¯å£å ç”¨æƒ…å†µï¼š
+ *      	é€šä¿¡ç«¯å£ï¼š
+ *      		Serial0:è°ƒè¯•å’Œä¸Žä¸Šä½æœºé€šä¿¡
+ *      		SCLå’ŒSDA:å“åº”æƒ¯å¯¼ç³»ç»Ÿæ•°æ®
+ *      	æ•°å­—è¾“å…¥:
+ *      		6ä¸ªpwmè¾“å…¥é€šé“ï¼Œåˆ†åˆ«å¯¹åº”å¹³åŠ¨å’Œè½¬åŠ¨ä¸‰è½´
+ *      	æ•°å­—è¾“å‡ºï¼š
+ *      		8ä¸ªpwmè¾“å‡ºé€šé“ï¼Œåˆ†åˆ«å¯¹åº”å…«ä¸ªç”µæœºpwmè¾“å‡º
  */
 
 #ifndef OMNICOPTER_H
 #define OMNICOPTER_H
 
-#include <arduino.h>	//ArduinoÇý¶¯
-#include "Config.h"		//²ÎÊý±£´æÀà
-#include "MathExtend.h"	//ÊýÑ§Àà£¬°üÀ¨ËÄÔªÊýÔËËã
-#include "Input.h"		//Ò£¿ØÆ÷½ÓÊÕ»úÊäÈëÀà
-#include "Sensor.h"		//´«¸ÐÆ÷ÊäÈëÀà
-#include "Controller.h"	//¿ØÖÆÆ÷Àà
-#include "Output.h"		//µçµ÷Çý¶¯Àà
+#include <arduino.h>	//Arduinoé©±åŠ¨
+#include "Config.h"		//å‚æ•°ä¿å­˜ç±»
+#include "MathExtend.h"	//æ•°å­¦ç±»ï¼ŒåŒ…æ‹¬å››å…ƒæ•°è¿ç®—
+#include "Input.h"		//é¥æŽ§å™¨æŽ¥æ”¶æœºè¾“å…¥ç±»
+#include "Sensor.h"		//ä¼ æ„Ÿå™¨è¾“å…¥ç±»
+#include "Controller.h"	//æŽ§åˆ¶å™¨ç±»
+#include "Output.h"		//ç”µè°ƒé©±åŠ¨ç±»
 
 
 
-//ÊÂÎñ´¦Àí²ãÖ÷Àà
+//äº‹åŠ¡å¤„ç†å±‚ä¸»ç±»
 class OmniCopter
 {
 	public:
@@ -62,18 +62,18 @@ class OmniCopter
 		ControlAllocator controlAllocator;
 		EscDriver	escDriver;
 
-		void init();		//³õÊ¼»¯½ÓÊÕ»úÊäÈëµÄ¶Ë¿Ú
-		void getCompleteInput();		//»ñµÃÍêÕûµÄÊäÈëÊý¾Ý£¨Æ½¶¯ºÍ×ËÌ¬¾ù×ª»»¹ý),°üÀ¨×ËÌ¬Êý¾Ý£¬Êµ¼Êµ÷ÓÃÖÐÖ»Ðèµ÷ÓÃ´Ëº¯Êý
+		void init();		//åˆå§‹åŒ–æŽ¥æ”¶æœºè¾“å…¥çš„ç«¯å£
+		void getCompleteInput();		//èŽ·å¾—å®Œæ•´çš„è¾“å…¥æ•°æ®ï¼ˆå¹³åŠ¨å’Œå§¿æ€å‡è½¬æ¢è¿‡),åŒ…æ‹¬å§¿æ€æ•°æ®ï¼Œå®žé™…è°ƒç”¨ä¸­åªéœ€è°ƒç”¨æ­¤å‡½æ•°
 		void getRcValue(int*);
-		void getRawSensorInput();		//»ñµÃ´«¸ÐÆ÷Êä³öµÄÔ­Ê¼Êý¾Ý
-		void attitudeProcess();			//½Ç¶ÈÍâ»·¿ØÖÆ
-		void bodyRateProcess();			//½ÇËÙÂÊÄÚ»·¿ØÖÆ
-		void positionProcess();			//Î»ÖÃ¿ØÖÆ
-		void controlAllocateProcess();	//¶¯Á¦·ÖÅä
-		void excute();					//Ö´ÐÐµçµ÷Çý¶¯
+		void getRawSensorInput();		//èŽ·å¾—ä¼ æ„Ÿå™¨è¾“å‡ºçš„åŽŸå§‹æ•°æ®
+		void attitudeProcess();			//è§’åº¦å¤–çŽ¯æŽ§åˆ¶
+		void bodyRateProcess();			//è§’é€ŸçŽ‡å†…çŽ¯æŽ§åˆ¶
+		void positionProcess();			//ä½ç½®æŽ§åˆ¶
+		void controlAllocateProcess();	//åŠ¨åŠ›åˆ†é…
+		void excute();					//æ‰§è¡Œç”µè°ƒé©±åŠ¨
 	private:
-		void getRawInput(Input_Raw* input,int* RC1);	//»ñµÃ½ÓÊÕ»úÊäÈëµÄ³õÊ¼Êý¾Ý
-		void getRcInput(int* RC1);		//»ñµÃ×ª»»³ÉËÄÔªÊýµÄ½ÓÊÕ»úÊäÈëÊý¾Ý
+		void getRawInput(Input_Raw* input,int* RC1);	//èŽ·å¾—æŽ¥æ”¶æœºè¾“å…¥çš„åˆå§‹æ•°æ®
+		void getRcInput(int* RC1);		//èŽ·å¾—è½¬æ¢æˆå››å…ƒæ•°çš„æŽ¥æ”¶æœºè¾“å…¥æ•°æ®
 };
 
 
