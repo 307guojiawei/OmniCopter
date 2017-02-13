@@ -35,7 +35,7 @@ void FailSafe::safeToArm(OmniCopter o)
 		}
 		if(disArm||outOfControl)
 		{
-			/*PropData prop;
+			PropData prop;
 			prop.fProp[0]=0;
 			prop.fProp[1]=0;
 			prop.fProp[2]=0;
@@ -44,7 +44,7 @@ void FailSafe::safeToArm(OmniCopter o)
 			prop.fProp[5]=0;
 			prop.fProp[6]=0;
 			prop.fProp[7]=0;
-			o.escDriver.excute(prop);*/
+			o.escDriver.excute(prop);
 			digitalWrite(LED_BUILTIN,HIGH);
 		}else
 		{

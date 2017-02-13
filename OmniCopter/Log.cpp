@@ -9,9 +9,9 @@
 
 void Log::init()
 {
-	Serial.begin(115200);
+	Serial.begin(DEBUG_SERIAL_RATE);
 	delay(100);
-	Serial.println("Init");
+	Serial.println("Init#");
 }
 
 void Log::log(char* message,double value)
@@ -20,7 +20,7 @@ void Log::log(char* message,double value)
 	if(debugEnable&&showEnable)
 	{
 		Serial.print(micros());
-		Serial.print(message);Serial.print(": ");Serial.println(value);
+		Serial.print(message);Serial.print(": ");Serial.print(value);Serial.println("#");
 	}
 }
 
@@ -36,7 +36,7 @@ void Log::oneLoop()
 	{
 		showEnable=true;
 		showTime=0;
-		Serial.println("-----------------------------------");
+		Serial.println("--$#");
 	}else
 	{
 		showEnable=false;
@@ -57,7 +57,7 @@ void Log::showRcInput(OmniCopter o)
 		Serial.print(o.input.Roll[2]);Serial.print(" ");
 		Serial.print(o.input.Move[0]);Serial.print(" ");
 		Serial.print(o.input.Move[1]);Serial.print(" ");
-		Serial.print(o.input.Move[2]);Serial.println(" ");
+		Serial.print(o.input.Move[2]);Serial.println("#");
 	}
 }
 void Log::showFreq(OmniCopter o)
@@ -69,8 +69,8 @@ void Log::showFreq(OmniCopter o)
 	{
 		unsigned long int now=micros();
 		unsigned long int thisTime=now-this->lastTime;
-		Serial.print("OuterLoop:");Serial.print(1000000.0/(thisTime/(double)showF));Serial.println("HZ");
-		Serial.print("InnerLoop:");Serial.print(1000000.0/(thisTime/(double)showF)*(double)INNER_OUTER_RATIO);Serial.println("HZ");
+		Serial.print("OuterLoop:");Serial.print(1000000.0/(thisTime/(double)showF));Serial.println("HZ #");
+		Serial.print("InnerLoop:");Serial.print(1000000.0/(thisTime/(double)showF)*(double)INNER_OUTER_RATIO);Serial.println("HZ #");
 		this->lastTime=now;
 
 	}
@@ -83,12 +83,12 @@ void Log::showSensor(OmniCopter o)
 		Serial.print("Angle: ");
 		Serial.print(o.sensor.sensorRaw.bodyAngle.roll);Serial.print(" ");
 		Serial.print(o.sensor.sensorRaw.bodyAngle.pitch);Serial.print(" ");
-		Serial.print(o.sensor.sensorRaw.bodyAngle.yaw);Serial.println(" ");
+		Serial.print(o.sensor.sensorRaw.bodyAngle.yaw);Serial.println("# ");
 		Serial.print("Quaternion:");
 		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[0]);Serial.print(" ");
 		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[1]);Serial.print(" ");
 		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[2]);Serial.print(" ");
-		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[3]);Serial.println(" ");
+		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[3]);Serial.println("# ");
 	}
 }
 void Log::showForce(OmniCopter o)
@@ -99,14 +99,14 @@ void Log::showForce(OmniCopter o)
 		Serial.print("DesireBodyRate:");
 		Serial.print(o.desiredBodyRate.rollRate);Serial.print(" ");
 		Serial.print(o.desiredBodyRate.pitchRate);Serial.print(" ");
-		Serial.print(o.desiredBodyRate.yawRate);Serial.println(" ");
+		Serial.print(o.desiredBodyRate.yawRate);Serial.println("# ");
 		Serial.print("Force&Torque: ");
 		Serial.print(o.desiredCondition.fDes[0]);Serial.print(" ");
 		Serial.print(o.desiredCondition.fDes[1]);Serial.print(" ");
 		Serial.print(o.desiredCondition.fDes[2]);Serial.print(" ");
 		Serial.print(o.desiredCondition.tDes[0]);Serial.print(" ");
 		Serial.print(o.desiredCondition.tDes[1]);Serial.print(" ");
-		Serial.print(o.desiredCondition.tDes[2]);Serial.println(" ");
+		Serial.print(o.desiredCondition.tDes[2]);Serial.println("# ");
 
 	}
 }
@@ -124,6 +124,6 @@ void Log::showEscOutput(OmniCopter o)
 		Serial.print(o.escDriver.prop[4]);Serial.print(" ");
 		Serial.print(o.escDriver.prop[5]);Serial.print(" ");
 		Serial.print(o.escDriver.prop[6]);Serial.print(" ");
-		Serial.print(o.escDriver.prop[7]);Serial.println(" ");
+		Serial.print(o.escDriver.prop[7]);Serial.println("# ");
 	}
 }
