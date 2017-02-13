@@ -1,8 +1,10 @@
 
 #include <OmniCopter.h>
 #include <Log.h>
+#include <FailSafe.h>
 OmniCopter omniCopter;
 Log loger;
+FailSafe failSafe;
 int RC1[10];
 void InterruptService()
 {
@@ -32,7 +34,7 @@ void setup()
 	loger.setDebugMode(true);
 #endif
 	loger.init();
-	loger.setFreq(10);
+	loger.setFreq(5);
 	attachInterrupt(PPM_IN,InterruptService,CHANGE);
 }
 
@@ -57,7 +59,7 @@ void loop()
 
 		omniCopter.excute();
 	}
-
+	failSafe.safeToArm(omniCopter);
 	loger.showForce(omniCopter);
 	loger.showEscOutput(omniCopter);
 	loger.oneLoop();

@@ -22,7 +22,9 @@ private:
 	Servo prop6;
 	Servo prop7;
 	Servo prop8;
+
 public:
+	int prop[8];
 	void escInit();			//电调初始化
 	PropData getPropData();	//获取propData
 	void setPropData(PropData propData);	//设置propData

@@ -29,23 +29,29 @@ void EscDriver::escInit()
 }
 void EscDriver::excute()
 {
-	int prop1=map((long )ceil(propData.fProp[0]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	int prop2=map((long )ceil(propData.fProp[1]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	int prop3=map((long )ceil(propData.fProp[2]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	int prop4=map((long )ceil(propData.fProp[3]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	int prop5=map((long )ceil(propData.fProp[4]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	int prop6=map((long )ceil(propData.fProp[5]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	int prop7=map((long )ceil(propData.fProp[6]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	int prop8=map((long )ceil(propData.fProp[7]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-
-	this->prop1.writeMicroseconds(prop1);
-	this->prop2.writeMicroseconds(prop2);
-	this->prop3.writeMicroseconds(prop3);
-	this->prop4.writeMicroseconds(prop4);
-	this->prop5.writeMicroseconds(prop5);
-	this->prop6.writeMicroseconds(prop6);
-	this->prop7.writeMicroseconds(prop7);
-	this->prop8.writeMicroseconds(prop8);
+	prop[0]=map((long )ceil(propData.fProp[0]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
+	prop[1]=map((long )ceil(propData.fProp[1]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
+	prop[2]=map((long )ceil(propData.fProp[2]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
+	prop[3]=map((long )ceil(propData.fProp[3]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
+	prop[4]=map((long )ceil(propData.fProp[4]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
+	prop[5]=map((long )ceil(propData.fProp[5]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
+	prop[6]=map((long )ceil(propData.fProp[6]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
+	prop[7]=map((long )ceil(propData.fProp[7]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
+	for(int i=0;i<8;i++)
+	{
+		if(prop[i]<ESC_MID+ESC_START_POINT&&prop[i]>ESC_MID-ESC_START_POINT)
+		{
+			prop[i]=ESC_MID;
+		}
+	}
+	this->prop1.writeMicroseconds(prop[0]);
+	this->prop2.writeMicroseconds(prop[1]);
+	this->prop3.writeMicroseconds(prop[2]);
+	this->prop4.writeMicroseconds(prop[3]);
+	this->prop5.writeMicroseconds(prop[4]);
+	this->prop6.writeMicroseconds(prop[5]);
+	this->prop7.writeMicroseconds(prop[6]);
+	this->prop8.writeMicroseconds(prop[7]);
 }
 
 void EscDriver::excute(PropData propData)

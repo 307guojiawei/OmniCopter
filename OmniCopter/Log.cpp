@@ -96,6 +96,10 @@ void Log::showForce(OmniCopter o)
 	if(!debugEnable)return;
 	if(debugEnable&&showEnable)
 	{
+		Serial.print("DesireBodyRate:");
+		Serial.print(o.desiredBodyRate.rollRate);Serial.print(" ");
+		Serial.print(o.desiredBodyRate.pitchRate);Serial.print(" ");
+		Serial.print(o.desiredBodyRate.yawRate);Serial.println(" ");
 		Serial.print("Force&Torque: ");
 		Serial.print(o.desiredCondition.fDes[0]);Serial.print(" ");
 		Serial.print(o.desiredCondition.fDes[1]);Serial.print(" ");
@@ -113,13 +117,13 @@ void Log::showEscOutput(OmniCopter o)
 	if(debugEnable&&showEnable)
 	{
 		Serial.print("ESC: ");
-		Serial.print(o.escDriver.getPropData().fProp[0]);Serial.print(" ");
-		Serial.print(o.escDriver.getPropData().fProp[1]);Serial.print(" ");
-		Serial.print(o.escDriver.getPropData().fProp[2]);Serial.print(" ");
-		Serial.print(o.escDriver.getPropData().fProp[3]);Serial.print(" ");
-		Serial.print(o.escDriver.getPropData().fProp[4]);Serial.print(" ");
-		Serial.print(o.escDriver.getPropData().fProp[5]);Serial.print(" ");
-		Serial.print(o.escDriver.getPropData().fProp[6]);Serial.print(" ");
-		Serial.print(o.escDriver.getPropData().fProp[7]);Serial.println(" ");
+		Serial.print(o.escDriver.prop[0]);Serial.print(" ");
+		Serial.print(o.escDriver.prop[1]);Serial.print(" ");
+		Serial.print(o.escDriver.prop[2]);Serial.print(" ");
+		Serial.print(o.escDriver.prop[3]);Serial.print(" ");
+		Serial.print(o.escDriver.prop[4]);Serial.print(" ");
+		Serial.print(o.escDriver.prop[5]);Serial.print(" ");
+		Serial.print(o.escDriver.prop[6]);Serial.print(" ");
+		Serial.print(o.escDriver.prop[7]);Serial.println(" ");
 	}
 }
