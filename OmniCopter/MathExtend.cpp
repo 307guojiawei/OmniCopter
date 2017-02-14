@@ -34,7 +34,7 @@ Quaternion Quaternion::reverse()
 	double ay=this->q[2];
 	double az=this->q[3];
 	double div=a0*a0+ax*ax+ay*ay+az*az;
-	div=sqrt(div);
+	//div=sqrt(div);
 	ans.q[0]=a0/div;
 	ans.q[1]=(-ax)/div;
 	ans.q[2]=(-ay)/div;

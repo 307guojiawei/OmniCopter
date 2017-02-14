@@ -30,9 +30,13 @@ void AttitudeController::process(Input_Converted desireInput,Sensor_Raw sensorDa
 	ff.rollRate=qBuff.q[1];
 	ff.pitchRate=qBuff.q[2];
 	ff.yawRate=qBuff.q[3];
-	desireBodyRate.rollRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[1]+ff.rollRate;
-	desireBodyRate.pitchRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[2]+ff.pitchRate;
-	desireBodyRate.yawRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[3]+ff.yawRate;
+	desireBodyRate.rollRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[1];//ff.rollRate*FEED_FORWARD_RATIO;
+	desireBodyRate.pitchRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[2];//+ff.pitchRate*FEED_FORWARD_RATIO;
+	desireBodyRate.yawRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[3];//+ff.yawRate*FEED_FORWARD_RATIO;
+
+	desireBodyRate.rollRate*=DESIRE_BODY_RATE_RATIO;
+	desireBodyRate.pitchRate*=DESIRE_BODY_RATE_RATIO;
+	desireBodyRate.yawRate*=DESIRE_BODY_RATE_RATIO;
 	this->desireCondition=desireBodyRate;
 }
 
@@ -46,6 +50,9 @@ void BodyRateController::process(BodyRate desireBodyRate,Sensor_Raw sensorData)
 	this->desireTorque.tDes[0]=(1/TRATE)*J*(desireBodyRate.rollRate-sensorData.bodyRate.rollRate)+(sensorData.bodyRate.pitchRate*J*sensorData.bodyRate.yawRate-sensorData.bodyRate.yawRate*J*sensorData.bodyRate.pitchRate);
 	this->desireTorque.tDes[1]=(1/TRATE)*J*(desireBodyRate.pitchRate-sensorData.bodyRate.pitchRate)+(sensorData.bodyRate.yawRate*J*sensorData.bodyRate.rollRate-sensorData.bodyRate.rollRate*J*sensorData.bodyRate.yawRate);
 	this->desireTorque.tDes[2]=(1/TRATE)*J*(desireBodyRate.yawRate-sensorData.bodyRate.yawRate)+(sensorData.bodyRate.rollRate*J*sensorData.bodyRate.pitchRate-sensorData.bodyRate.pitchRate*J*sensorData.bodyRate.rollRate);
+	this->desireTorque.tDes[0]*=DESIRE_CONDITION_TORQUE_RATIO;
+	this->desireTorque.tDes[1]*=DESIRE_CONDITION_TORQUE_RATIO;
+	this->desireTorque.tDes[2]*=DESIRE_CONDITION_TORQUE_RATIO;
 }
 
 DesireCondition PositionController::getDesireCondition()
@@ -59,6 +66,9 @@ void PositionController::process(Input_Converted input,Sensor_Raw sensorData,Des
 	this->desireCondition.fDes[0]=input.Move[0];
 	this->desireCondition.fDes[1]=input.Move[1];
 	this->desireCondition.fDes[2]=input.Move[2];
+	this->desireCondition.fDes[0]*=DESIRE_CONDITION_FORCE_RATIO;
+	this->desireCondition.fDes[1]*=DESIRE_CONDITION_FORCE_RATIO;
+	this->desireCondition.fDes[2]*=DESIRE_CONDITION_FORCE_RATIO;
 }
 
 PropData ControlAllocator::getPropData()

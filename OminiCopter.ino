@@ -34,7 +34,7 @@ void setup()
 	loger.setDebugMode(true);
 #endif
 	loger.init();
-	loger.setFreq(5);
+	loger.setFreq(7);
 	attachInterrupt(PPM_IN,InterruptService,CHANGE);
 }
 

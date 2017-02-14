@@ -173,6 +173,7 @@ public class MainFrame extends Thread
 					{
 						
 						private String receiveBuf="";
+						private int gcTime=0;
 						@Override
 						public void serialEvent(SerialPortEvent arg0)
 						{								
@@ -198,6 +199,13 @@ public class MainFrame extends Thread
 									{										
 										uavInfo.setText(" ");
 										decodeBuf(receiveBuf);
+										gcTime++;
+										if(gcTime==20)
+										{
+											System.gc();
+											gcTime=0;
+										}
+										
 									}									
 								}			
 							}catch(Exception e)
@@ -269,6 +277,7 @@ public class MainFrame extends Thread
 		baudRate.setColumns(10);
 		panel.add(connect);
 		uavInfo = new JTextPane();
+		uavInfo.setEditable(false);
 		uavInfo.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 17));
 		frmOmnicopterGcs.getContentPane().add(uavInfo, BorderLayout.CENTER);
 		
@@ -293,6 +302,7 @@ public class MainFrame extends Thread
 		uavConfig.add(label_2, gbc_label_2);
 		
 		outerLoopFreq = new JTextField();
+		outerLoopFreq.setEditable(false);
 		outerLoopFreq.setFont(new Font("Î¢ÈíÑÅºÚ Light", Font.PLAIN, 17));
 		outerLoopFreq.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_outerLoopFreq = new GridBagConstraints();
@@ -314,6 +324,7 @@ public class MainFrame extends Thread
 		uavConfig.add(label_3, gbc_label_3);
 		
 		innerLoopFreq = new JTextField();
+		innerLoopFreq.setEditable(false);
 		innerLoopFreq.setFont(new Font("Î¢ÈíÑÅºÚ Light", Font.PLAIN, 17));
 		GridBagConstraints gbc_innerLoopFreq = new GridBagConstraints();
 		gbc_innerLoopFreq.fill = GridBagConstraints.BOTH;
@@ -334,6 +345,7 @@ public class MainFrame extends Thread
 		uavConfig.add(label_9, gbc_label_9);
 		
 		rcInput = new JTextField();
+		rcInput.setEditable(false);
 		rcInput.setFont(new Font("Î¢ÈíÑÅºÚ Light", Font.PLAIN, 17));
 		GridBagConstraints gbc_rcInput = new GridBagConstraints();
 		gbc_rcInput.fill = GridBagConstraints.BOTH;
@@ -354,6 +366,7 @@ public class MainFrame extends Thread
 		uavConfig.add(label_4, gbc_label_4);
 		
 		bodyAngle = new JTextField();
+		bodyAngle.setEditable(false);
 		bodyAngle.setFont(new Font("Î¢ÈíÑÅºÚ Light", Font.PLAIN, 17));
 		GridBagConstraints gbc_bodyAngle = new GridBagConstraints();
 		gbc_bodyAngle.fill = GridBagConstraints.BOTH;
@@ -374,6 +387,7 @@ public class MainFrame extends Thread
 		uavConfig.add(label_5, gbc_label_5);
 		
 		quaternion = new JTextField();
+		quaternion.setEditable(false);
 		quaternion.setFont(new Font("Î¢ÈíÑÅºÚ Light", Font.PLAIN, 17));
 		GridBagConstraints gbc_quaternion = new GridBagConstraints();
 		gbc_quaternion.fill = GridBagConstraints.BOTH;
@@ -394,6 +408,7 @@ public class MainFrame extends Thread
 		uavConfig.add(label_6, gbc_label_6);
 		
 		desiredBodyRate = new JTextField();
+		desiredBodyRate.setEditable(false);
 		desiredBodyRate.setFont(new Font("Î¢ÈíÑÅºÚ Light", Font.PLAIN, 17));
 		GridBagConstraints gbc_desiredBodyRate = new GridBagConstraints();
 		gbc_desiredBodyRate.fill = GridBagConstraints.BOTH;
@@ -414,6 +429,7 @@ public class MainFrame extends Thread
 		uavConfig.add(label_7, gbc_label_7);
 		
 		forceTorque = new JTextField();
+		forceTorque.setEditable(false);
 		forceTorque.setFont(new Font("Î¢ÈíÑÅºÚ Light", Font.PLAIN, 17));
 		GridBagConstraints gbc_forceTorque = new GridBagConstraints();
 		gbc_forceTorque.fill = GridBagConstraints.BOTH;
@@ -434,6 +450,7 @@ public class MainFrame extends Thread
 		uavConfig.add(label_8, gbc_label_8);
 		
 		escOutput = new JTextField();
+		escOutput.setEditable(false);
 		escOutput.setFont(new Font("Î¢ÈíÑÅºÚ Light", Font.PLAIN, 17));
 		GridBagConstraints gbc_escOutput = new GridBagConstraints();
 		gbc_escOutput.fill = GridBagConstraints.BOTH;
