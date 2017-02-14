@@ -36,7 +36,7 @@ void Log::oneLoop()
 	{
 		showEnable=true;
 		showTime=0;
-		Serial.println("--$#");
+		Serial.println("--$");
 	}else
 	{
 		showEnable=false;
@@ -80,7 +80,7 @@ void Log::showSensor(OmniCopter o)
 	if(!debugEnable)return;
 	if(debugEnable&&showEnable)
 	{
-		Serial.print("Angle: ");
+		Serial.print("Angle:");
 		Serial.print(o.sensor.sensorRaw.bodyAngle.roll);Serial.print(" ");
 		Serial.print(o.sensor.sensorRaw.bodyAngle.pitch);Serial.print(" ");
 		Serial.print(o.sensor.sensorRaw.bodyAngle.yaw);Serial.println("# ");
@@ -100,7 +100,7 @@ void Log::showForce(OmniCopter o)
 		Serial.print(o.desiredBodyRate.rollRate);Serial.print(" ");
 		Serial.print(o.desiredBodyRate.pitchRate);Serial.print(" ");
 		Serial.print(o.desiredBodyRate.yawRate);Serial.println("# ");
-		Serial.print("Force&Torque: ");
+		Serial.print("Force&Torque:");
 		Serial.print(o.desiredCondition.fDes[0]);Serial.print(" ");
 		Serial.print(o.desiredCondition.fDes[1]);Serial.print(" ");
 		Serial.print(o.desiredCondition.fDes[2]);Serial.print(" ");
