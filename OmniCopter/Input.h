@@ -27,8 +27,10 @@ class Input_Converted	//转换过的接收机数据，为四元数格式
 		double Move[3];
 		//姿态角度部分的转换，从角度转换为四元数
 		Quaternion Roll;
-		Input_Converted getInputConverted(Input_Raw rawInput);//注意，此处只转换角度，平动数据需要结合姿态求解
+
 		Input_Converted getCompleteInput(Sensor_Raw sensorRaw);//获得角度和平动都转换过的数据，可以送入控制环。
+
+		Input_Converted getInputConverted(Input_Raw rawInput);//注意，此处只转换角度，平动数据需要结合姿态求解
 };
 
 

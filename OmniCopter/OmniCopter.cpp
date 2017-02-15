@@ -56,9 +56,8 @@ void OmniCopter::getRcInput(int* RC1)
 	struct Input_Raw input;
 	getRawInput(&input,RC1);
 	this->input=input;
-	Input_Converted convertedInput;
-	convertedInput=convertedInput.getInputConverted(input);
-	this->convertedInput=convertedInput;
+	this->convertedInput=convertedInput.getInputConverted(input);
+
 }
 
 void OmniCopter::getRawSensorInput()
@@ -66,8 +65,9 @@ void OmniCopter::getRawSensorInput()
 	this->sensor.getSensorData();
 }
 
-void OmniCopter::getCompleteInput()
+void OmniCopter::getCompleteInput(int* RC)
 {
+	this->getRcValue(RC);
 	this->getRawSensorInput();
 	this->getRcInput(this->RC);
 	this->convertedInput=this->convertedInput.getCompleteInput(this->sensor.sensorRaw);

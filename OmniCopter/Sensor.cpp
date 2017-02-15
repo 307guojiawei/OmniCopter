@@ -20,9 +20,9 @@ void Sensor::getSensorData()	//获取传感器数据
 	sensorData.bodyAngle.roll=(double)JY901.stcAngle.Angle[0]/32768.0*180;
 	sensorData.bodyAngle.pitch=(double)JY901.stcAngle.Angle[1]/32768.0*180;
 	sensorData.bodyAngle.yaw=(double)JY901.stcAngle.Angle[2]/32768.0*180;
-	sensorData.bodyRate.rollRate=(double)JY901.stcGyro.w[0]/32768.0*2000.0;
-	sensorData.bodyRate.pitchRate=(double)JY901.stcGyro.w[1]/32768.0*2000.0;
-	sensorData.bodyRate.yawRate=(double)JY901.stcGyro.w[2]/32768.0*2000.0;
+	sensorData.bodyRate.rollRate=(double)JY901.stcGyro.w[0]/32768.0*2000.0*PI/180.0;
+	sensorData.bodyRate.pitchRate=(double)JY901.stcGyro.w[1]/32768.0*2000.0*PI/180.0;
+	sensorData.bodyRate.yawRate=(double)JY901.stcGyro.w[2]/32768.0*2000.0*PI/180.0;
 	sensorData.bodyQuaternion.q[0]=(double)JY901.stcQuater.q0/32768.0;
 	sensorData.bodyQuaternion.q[1]=(double)JY901.stcQuater.q1/32768.0;
 	sensorData.bodyQuaternion.q[2]=(double)JY901.stcQuater.q2/32768.0;
@@ -36,9 +36,9 @@ void Sensor::getSensorData()	//获取传感器数据
 void Sensor::getSensorRate()
 {
 	JY901.GetGyro();
-	this->sensorRaw.bodyRate.rollRate=(double)JY901.stcGyro.w[0]/32768.0*2000.0;
-	this->sensorRaw.bodyRate.pitchRate=(double)JY901.stcGyro.w[1]/32768.0*2000.0;
-	this->sensorRaw.bodyRate.yawRate=(double)JY901.stcGyro.w[2]/32768.0*2000.0;
+	this->sensorRaw.bodyRate.rollRate=(double)JY901.stcGyro.w[0]/32768.0*2000.0*PI/180.0;
+	this->sensorRaw.bodyRate.pitchRate=(double)JY901.stcGyro.w[1]/32768.0*2000.0*PI/180.0;
+	this->sensorRaw.bodyRate.yawRate=(double)JY901.stcGyro.w[2]/32768.0*2000.0*PI/180.0;
 	this->sensorRaw.bodyRate.rollRate=ceil(this->sensorRaw.bodyRate.rollRate*PERCISION)/(double)PERCISION;
 	this->sensorRaw.bodyRate.pitchRate=ceil(this->sensorRaw.bodyRate.pitchRate*PERCISION)/(double)PERCISION;
 	this->sensorRaw.bodyRate.yawRate=ceil(this->sensorRaw.bodyRate.yawRate*PERCISION)/(double)PERCISION;

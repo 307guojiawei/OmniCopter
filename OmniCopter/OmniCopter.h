@@ -63,8 +63,8 @@ class OmniCopter
 		EscDriver	escDriver;
 
 		void init();		//初始化接收机输入的端口
-		void getCompleteInput();		//获得完整的输入数据（平动和姿态均转换过),包括姿态数据，实际调用中只需调用此函数
-		void getRcValue(int*);
+		void getCompleteInput(int*);		//获得完整的输入数据（平动和姿态均转换过),包括姿态数据，实际调用中只需调用此函数
+
 		void getRawSensorInput();		//获得传感器输出的原始数据
 		void attitudeProcess();			//角度外环控制
 		void bodyRateProcess();			//角速率内环控制
@@ -74,6 +74,7 @@ class OmniCopter
 	private:
 		void getRawInput(Input_Raw* input,int* RC1);	//获得接收机输入的初始数据
 		void getRcInput(int* RC1);		//获得转换成四元数的接收机输入数据
+		void getRcValue(int*);
 };
 
 

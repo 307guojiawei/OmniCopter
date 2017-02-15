@@ -11,7 +11,7 @@
 #define MATHEXTEND_H
 
 //数学定义
-struct Angle	//角度定义
+struct Angle	//角度定义(弧度制)
 {
 	double roll;	//滚转
 	double pitch;	//俯仰

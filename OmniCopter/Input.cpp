@@ -5,9 +5,9 @@ Input_Converted Input_Converted::getInputConverted(Input_Raw rawInput)
 	Input_Converted ans;
 	Angle angle;
 	Quaternion body;
-	angle.roll=rawInput.Roll[0];
-	angle.pitch=rawInput.Roll[1];
-	angle.yaw=rawInput.Roll[2];
+	angle.roll=rawInput.Roll[0]*PI/180.0;
+	angle.pitch=rawInput.Roll[1]*PI/180.0;
+	angle.yaw=rawInput.Roll[2]*PI/180.0;
 	body=body.createFromAngle(angle);
 	ans.Roll=body;
 	ans.Move[0]=rawInput.Move[0];
@@ -18,6 +18,7 @@ Input_Converted Input_Converted::getInputConverted(Input_Raw rawInput)
 
 Input_Converted Input_Converted::getCompleteInput(Sensor_Raw sensorRaw)
 {
+
 	Input_Converted ans;
 	ans.Roll=this->Roll;
 	//平动的大地坐标->随体坐标转换
@@ -28,8 +29,13 @@ Input_Converted Input_Converted::getCompleteInput(Sensor_Raw sensorRaw)
 	double q1=sensorRaw.bodyQuaternion.q[1];
 	double q2=sensorRaw.bodyQuaternion.q[2];
 	double q3=sensorRaw.bodyQuaternion.q[3];
+
 	ans.Move[0]=(q0*q0+q1*q1-q2*q2-q3*q3)*fx+2*(q1*q2+q0*q3)*fy+2*(q1*q3-q0*q2)*fz;
 	ans.Move[1]=2*(q1*q2-q0*q3)*fx+(q0*q0-q1*q1+q2*q2-q3*q3)*fy+2*(q2*q3+q0*q1)*fz;
 	ans.Move[2]=2*(q1*q3+q0*q2)*fx+2*(q2*q3-q0*q1)*fy+(q0*q0-q1*q1-q2*q2+q3*q3)*fz;
+	/*
+	ans.Move[0]=(q0*q0+q1*q1-q2*q2-q3*q3)*fx+2*(q1*q2-q0*q3)*fy+2*(q1*q3+q0*q2)*fz;
+	ans.Move[1]=2*(q1*q2+q0*q3)*fx+(q0*q0-q1*q1+q2*q2-q3*q3)*fy+2*(q2*q3-q0*q1)*fz;
+	ans.Move[2]=2*(q1*q3-q0*q2)*fx+2*(q2*q3+q0*q1)*fy+(q0*q0-q1*q1-q2*q2+q3*q3)*fz;*/
 	return ans;
 }

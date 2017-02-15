@@ -34,7 +34,7 @@ void setup()
 	loger.setDebugMode(true);
 #endif
 	loger.init();
-	loger.setFreq(7);
+	loger.setFreq(12);
 	attachInterrupt(PPM_IN,InterruptService,CHANGE);
 }
 
@@ -43,28 +43,15 @@ void loop()
 {
 	loger.showFreq(omniCopter);
 
-	omniCopter.getRcValue(RC1);
-	omniCopter.getCompleteInput();
+	omniCopter.getCompleteInput(RC1);
 
 	loger.showRcInput(omniCopter);
 	loger.showSensor(omniCopter);
-	bool flag=true;
 
-	if(abs(omniCopter.input.Roll[0]-omniCopter.sensor.sensorRaw.bodyAngle.roll)<=5&&abs(omniCopter.input.Roll[1]-omniCopter.sensor.sensorRaw.bodyAngle.pitch)<=5&&abs(omniCopter.input.Roll[2]-omniCopter.sensor.sensorRaw.bodyAngle.yaw)<=5)
-	{
-			flag=false;
-	}
 
-	if(flag)
-	{
-		omniCopter.attitudeProcess();
-	}
-	else
-	{
-		omniCopter.desiredBodyRate.rollRate=0.0;
-		omniCopter.desiredBodyRate.pitchRate=0.0;
-		omniCopter.desiredBodyRate.yawRate=0.0;
-	}
+
+	omniCopter.attitudeProcess();
+
 
 	for(int i=0;i<INNER_OUTER_RATIO;i++)
 	{
