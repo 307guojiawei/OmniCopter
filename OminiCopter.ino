@@ -5,7 +5,7 @@
 OmniCopter omniCopter;
 Log loger;
 FailSafe failSafe;
-int RC1[10];
+int RC1[10]={1506,1506,1506,1506,1506,1506,1400};
 void InterruptService()
 {
 	static unsigned long int lastTime=0;
@@ -48,8 +48,24 @@ void loop()
 
 	loger.showRcInput(omniCopter);
 	loger.showSensor(omniCopter);
+	bool flag=true;
 
-	omniCopter.attitudeProcess();
+	if(abs(omniCopter.input.Roll[0]-omniCopter.sensor.sensorRaw.bodyAngle.roll)<=5&&abs(omniCopter.input.Roll[1]-omniCopter.sensor.sensorRaw.bodyAngle.pitch)<=5&&abs(omniCopter.input.Roll[2]-omniCopter.sensor.sensorRaw.bodyAngle.yaw)<=5)
+	{
+			flag=false;
+	}
+
+	if(flag)
+	{
+		omniCopter.attitudeProcess();
+	}
+	else
+	{
+		omniCopter.desiredBodyRate.rollRate=0.0;
+		omniCopter.desiredBodyRate.pitchRate=0.0;
+		omniCopter.desiredBodyRate.yawRate=0.0;
+	}
+
 	for(int i=0;i<INNER_OUTER_RATIO;i++)
 	{
 		omniCopter.bodyRateProcess();

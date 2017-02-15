@@ -30,9 +30,9 @@ void AttitudeController::process(Input_Converted desireInput,Sensor_Raw sensorDa
 	ff.rollRate=qBuff.q[1];
 	ff.pitchRate=qBuff.q[2];
 	ff.yawRate=qBuff.q[3];
-	desireBodyRate.rollRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[1];//ff.rollRate*FEED_FORWARD_RATIO;
-	desireBodyRate.pitchRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[2];//+ff.pitchRate*FEED_FORWARD_RATIO;
-	desireBodyRate.yawRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[3];//+ff.yawRate*FEED_FORWARD_RATIO;
+	desireBodyRate.rollRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[1]+ff.rollRate*FEED_FORWARD_RATIO;
+	desireBodyRate.pitchRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[2]+ff.pitchRate*FEED_FORWARD_RATIO;
+	desireBodyRate.yawRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[3]+ff.yawRate*FEED_FORWARD_RATIO;
 
 	desireBodyRate.rollRate*=DESIRE_BODY_RATE_RATIO;
 	desireBodyRate.pitchRate*=DESIRE_BODY_RATE_RATIO;
@@ -78,6 +78,17 @@ PropData ControlAllocator::getPropData()
 
 void ControlAllocator::process(DesireCondition d)
 {
+	for(int i=0;i<3;i++)
+	{
+		if(abs(d.fDes[i])>DESIRE_CONDITION_F_MAX)
+		{
+			d.fDes[i]=d.fDes[i]>0?DESIRE_CONDITION_F_MAX:-DESIRE_CONDITION_F_MAX;
+		}
+		if(abs(d.tDes[i])>DESIRE_CONDITION_TORQUE_MAX)
+		{
+			d.tDes[i]=d.tDes[i]>0?DESIRE_CONDITION_TORQUE_MAX:-DESIRE_CONDITION_TORQUE_MAX;
+		}
+	}
 	this->propData.fProp[0]=-0.295753175473055*d.fDes[0]+0.079246824526945*d.fDes[1]+0.216506350946110*d.fDes[2]+0.045753175473055*d.tDes[0]-0.170753175473055*d.tDes[1]+0.125*d.tDes[2];
 	this->propData.fProp[1]=0.079246824526945*d.fDes[0]+0.295753175473055*d.fDes[1]-0.216506350946110*d.fDes[2]-0.170753175473055*d.tDes[0]-0.045753175473055*d.tDes[1]-0.125*d.tDes[2];
 	this->propData.fProp[2]=-0.079246824526945*d.fDes[0]-0.295753175473055*d.fDes[1]-0.216506350946110*d.fDes[2]+0.170753175473055*d.tDes[0]+0.045753175473055*d.tDes[1]-0.125*d.tDes[2];

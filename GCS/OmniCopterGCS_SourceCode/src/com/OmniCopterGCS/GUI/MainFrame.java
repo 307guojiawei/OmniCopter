@@ -200,7 +200,7 @@ public class MainFrame extends Thread
 										uavInfo.setText(" ");
 										decodeBuf(receiveBuf);
 										gcTime++;
-										if(gcTime==20)
+										if(gcTime==2)
 										{
 											System.gc();
 											gcTime=0;

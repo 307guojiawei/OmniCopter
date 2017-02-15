@@ -21,12 +21,25 @@ void OmniCopter::init()
 
 void OmniCopter::getRawInput(struct Input_Raw* input,int* RC1)
 {
-	input->Roll[0]=map(RC1[0],RC_MIN,RC_MAX,-input->Roll_Max[0],input->Roll_Max[0]);	//滚转
-	input->Roll[1]=map(RC1[1],RC_MIN,RC_MAX,-input->Roll_Max[1],input->Roll_Max[1]);	//俯仰
-	input->Roll[2]=map(RC1[3],RC_MIN,RC_MAX,-input->Roll_Max[2],input->Roll_Max[2]);	//偏航
-	input->Move[0]=map(RC1[4],RC_MIN,RC_MAX,-input->Move_Max[0],input->Move_Max[0]);	//x轴平动
-	input->Move[1]=map(RC1[5],RC_MIN,RC_MAX,-input->Move_Max[1],input->Move_Max[1]);	//y轴平动
-	input->Move[2]=map(RC1[2],RC_MIN,RC_MAX,0,input->Move_Max[2]);	//油门（z轴平动）
+	static int lastRC[7];
+	int buf[7];
+	for(int j=0;j<7;j++)
+	{
+		if(abs(RC1[j]-lastRC[j])>=RC_PERCISION)
+		{
+			buf[j]=RC1[j];
+			lastRC[j]=RC1[j];
+		}else
+		{
+			buf[j]=lastRC[j];
+		}
+	}
+	input->Roll[0]=map(buf[0],RC_MIN,RC_MAX,-input->Roll_Max[0],input->Roll_Max[0]);	//滚转
+	input->Roll[1]=map(buf[1],RC_MIN,RC_MAX,-input->Roll_Max[1],input->Roll_Max[1]);	//俯仰
+	input->Roll[2]=map(buf[3],RC_MIN,RC_MAX,-input->Roll_Max[2],input->Roll_Max[2]);	//偏航
+	input->Move[0]=map(buf[4],RC_MIN,RC_MAX,-input->Move_Max[0],input->Move_Max[0]);	//x轴平动
+	input->Move[1]=map(buf[5],RC_MIN,RC_MAX,-input->Move_Max[1],input->Move_Max[1]);	//y轴平动
+	input->Move[2]=map(buf[2],RC_MIN,RC_MAX,0,input->Move_Max[2]);	//油门（z轴平动）
 
 
 

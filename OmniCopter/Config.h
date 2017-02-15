@@ -32,7 +32,8 @@
 #define PROP_6 15
 #define PROP_7 16
 #define PROP_8 17
-#define PERCISION 1000	//浮点与整型转换精确度
+#define PERCISION 100	//浮点与整型转换精确度
+#define RC_PERCISION 15	//rc读取值的浮动范围
 
 //变量定义
 #define RC_MIN 1008	//接收机输入的脉宽最低值
@@ -41,19 +42,21 @@
 #define ESC_MAX 2004	//电调输出的最高值
 #define ESC_MID (ESC_MIN+ESC_MAX)/2	//电调输出的中点值
 #define ESC_START_POINT	40	//比电调中点值的绝对值大于多少时开始运动
-#define F_PORP_MIN -8		//运算输出的扭矩最小值
-#define F_PROP_MAX 8		//运算输出的扭矩最大值
+#define DESIRE_CONDITION_F_MAX	20//设置输出给控制分配模型的力的最大值
+#define DESIRE_CONDITION_TORQUE_MAX 20	//设置输出给控制分配模型的力矩的最大值
+#define F_PORP_MIN -8		//运算输出的螺旋桨推力最小值
+#define F_PROP_MAX 8		//运算输出的螺旋桨推力最大值
 
 
 //控制参数定义
-#define TATT 0.1		//出现在公式19中，外环时间常数，倒数看作p参数
-#define	TRATE 5.0		//出现在公式21中，内环时间常数，倒数看作p参数
+#define TATT 2.0		//出现在公式19中，外环时间常数，倒数看作p参数
+#define	TRATE 10.0		//出现在公式21中，内环时间常数，倒数看作p参数
 #define J 0.023433			//出现在公式21中，转动惯量
 #define INNER_OUTER_RATIO 10	//控制环中内外环运算比
-#define DESIRE_BODY_RATE_RATIO 50.0	//外环向内环输出的控制量的增益
-#define DESIRE_CONDITION_FORCE_RATIO 1.0	//内环向控制分配输出的力的增益
-#define DESIRE_CONDITION_TORQUE_RATIO 1.0	//内环向控制分配输出的力矩的增益
-#define FEED_FORWARD_RATIO	0.01		//前馈增益
+#define DESIRE_BODY_RATE_RATIO 10.0	//外环向内环输出的控制量的增益
+#define DESIRE_CONDITION_FORCE_RATIO 2.0	//内环向控制分配输出的力的增益
+#define DESIRE_CONDITION_TORQUE_RATIO 350.0	//内环向控制分配输出的力矩的增益
+#define FEED_FORWARD_RATIO	0.0		//前馈增益
 
 
 

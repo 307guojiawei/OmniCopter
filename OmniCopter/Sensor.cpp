@@ -27,6 +27,10 @@ void Sensor::getSensorData()	//获取传感器数据
 	sensorData.bodyQuaternion.q[1]=(double)JY901.stcQuater.q1/32768.0;
 	sensorData.bodyQuaternion.q[2]=(double)JY901.stcQuater.q2/32768.0;
 	sensorData.bodyQuaternion.q[3]=(double)JY901.stcQuater.q3/32768.0;
+	sensorData.bodyQuaternion.q[0]=ceil(sensorData.bodyQuaternion.q[0]*PERCISION)/(double)PERCISION;
+	sensorData.bodyQuaternion.q[1]=ceil(sensorData.bodyQuaternion.q[1]*PERCISION)/(double)PERCISION;
+	sensorData.bodyQuaternion.q[2]=ceil(sensorData.bodyQuaternion.q[2]*PERCISION)/(double)PERCISION;
+	sensorData.bodyQuaternion.q[3]=ceil(sensorData.bodyQuaternion.q[3]*PERCISION)/(double)PERCISION;
 	this->sensorRaw =sensorData;
 }
 void Sensor::getSensorRate()
@@ -35,5 +39,8 @@ void Sensor::getSensorRate()
 	this->sensorRaw.bodyRate.rollRate=(double)JY901.stcGyro.w[0]/32768.0*2000.0;
 	this->sensorRaw.bodyRate.pitchRate=(double)JY901.stcGyro.w[1]/32768.0*2000.0;
 	this->sensorRaw.bodyRate.yawRate=(double)JY901.stcGyro.w[2]/32768.0*2000.0;
+	this->sensorRaw.bodyRate.rollRate=ceil(this->sensorRaw.bodyRate.rollRate*PERCISION)/(double)PERCISION;
+	this->sensorRaw.bodyRate.pitchRate=ceil(this->sensorRaw.bodyRate.pitchRate*PERCISION)/(double)PERCISION;
+	this->sensorRaw.bodyRate.yawRate=ceil(this->sensorRaw.bodyRate.yawRate*PERCISION)/(double)PERCISION;
 
 }
