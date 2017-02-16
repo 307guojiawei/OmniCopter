@@ -8,6 +8,7 @@
 
 #ifndef LIBRARIES_OMNICOPTER_CONFIG_H_
 #define LIBRARIES_OMNICOPTER_CONFIG_H_
+
 /*
  * RC接线定义
  * 1	副翼
@@ -18,12 +19,21 @@
  * 6	aux2
  * 7	安全锁
  */
-//常量定义
+
 //#define MEGA_2560	//目标单片机
+
+//常量定义
+
 #define DEBUG_MODE	//调试模式
 #define DEBUG_SERIAL_RATE 115200
 
-#define PPM_IN 0	//ppm遥控信号输入,本值为中断引脚对应的中断序号
+#define HIGH 1
+#define LOW  0
+
+#define PPM_INT 0	//ppm遥控信号输入,本值为中断引脚对应的中断序号
+
+#define PPM_SWITCH_PIN 2 
+
 #define PROP_1 3	//电机输出端口
 #define PROP_2 4
 #define PROP_3 5
