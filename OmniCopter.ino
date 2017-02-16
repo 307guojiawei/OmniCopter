@@ -10,7 +10,7 @@ void InterruptService()
 {
 	static unsigned long int lastTime=0;
 	static int cursor=0;
-	if(digitalRead(2)==0)
+	if (digitalRead(PPM_SWITCH_PIN) == LOW)
 	{
 		unsigned long int now=micros();
 		unsigned long int thisTime=now-lastTime;
@@ -35,18 +35,22 @@ void setup()
 #endif
 	loger.init();
 	loger.setFreq(12);
-	attachInterrupt(PPM_IN,InterruptService,CHANGE);
+	attachInterrupt(PPM_INT,InterruptService,CHANGE);
 }
 
 // The loop function is called in an endless loop
 void loop()
 {
+#ifdef DEBUG_MODE
 	loger.showFreq(omniCopter);
+#endif
 
 	omniCopter.getCompleteInput(RC1);
 
+#ifdef DEBUG_MODE
 	loger.showRcInput(omniCopter);
 	loger.showSensor(omniCopter);
+#endif
 
 
 
@@ -63,7 +67,10 @@ void loop()
 		omniCopter.excute();
 	}
 	failSafe.safeToArm(omniCopter);
+
+#ifdef DEBUG_MODE
 	loger.showForce(omniCopter);
 	loger.showEscOutput(omniCopter);
 	loger.oneLoop();
+#endif
 }
