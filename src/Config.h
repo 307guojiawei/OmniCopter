@@ -66,7 +66,7 @@
 #define INNER_OUTER_RATIO 10	//控制环中内外环运算比
 #define DESIRE_BODY_RATE_RATIO 15.0	//外环向内环输出的控制量的增益
 #define DESIRE_CONDITION_FORCE_RATIO 2.0	//内环向控制分配输出的力的增益
-#define DESIRE_CONDITION_TORQUE_RATIO 340.0	//内环向控制分配输出的力矩的增益
+#define DESIRE_CONDITION_TORQUE_RATIO 34.0	//内环向控制分配输出的力矩的增益
 #define FEED_FORWARD_RATIO	1.0		//前馈增益
 
 

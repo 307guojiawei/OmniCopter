@@ -32,16 +32,26 @@ import com.OmniCopterGCS.SerialPort.SerialTool;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.swing.JTextField;
 import javax.swing.JMenuItem;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.*;
+
 import java.awt.Font;
 import java.awt.GridLayout;
+
 import javax.swing.SwingConstants;
+
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -67,6 +77,10 @@ public class MainFrame extends Thread
 	private JPanel uavConfig;
 	private JTextField rcInput;
 	private boolean decodeMode=false;
+	private boolean recordInfo=false;
+	private File flightInfo;
+	private PrintWriter out;
+	private flightRecorder recorder;
 
 	/**
 	 * Launch the application.
@@ -116,6 +130,21 @@ public class MainFrame extends Thread
 		
 		JMenu menu = new JMenu("\u6587\u4EF6");
 		menuBar.add(menu);
+		
+		JMenuItem menuItem_2 = new JMenuItem("\u98DE\u884C\u6570\u636E\u4FDD\u5B58");
+		menuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser jf = new JFileChooser(); 
+				FileNameExtensionFilter filter=new FileNameExtensionFilter("飞行数据格式csv", "csv");
+				jf.setFileFilter(filter); 
+				int option=jf.showDialog(null,null);  
+				if(option==JFileChooser.APPROVE_OPTION)
+				{
+					flightInfo = jf.getSelectedFile();					
+				}			
+			}
+		});
+		menu.add(menuItem_2);
 		
 		JMenu menu_1 = new JMenu("\u7F16\u8F91");
 		menuBar.add(menu_1);
@@ -226,37 +255,73 @@ public class MainFrame extends Thread
 								{
 									data=buf.substring(buf.indexOf(":")+1);
 									rcInput.setText(data);
+									if(recordInfo)
+									{
+										recorder.setRC(data);
+									}
 								}else if(buf.contains("OuterLoop:"))
 								{
 									data=buf.substring(buf.indexOf(":")+1);
 									outerLoopFreq.setText(data);
+									if(recordInfo)
+									{
+										recorder.setOuterLoop(data);
+									}
 								}else if(buf.contains("InnerLoop:"))
 								{
 									data=buf.substring(buf.indexOf(":")+1);
 									innerLoopFreq.setText(data);
+									if(recordInfo)
+									{
+										recorder.setInnerLoop(data);
+									}
 								}else if(buf.contains("Angle:"))
 								{
 									data=buf.substring(buf.indexOf(":")+1);
 									bodyAngle.setText(data);
+									if(recordInfo)
+									{
+										recorder.setBodyAngle(data);
+									}
 								}else if(buf.contains("Quaternion:"))
 								{
 									data=buf.substring(buf.indexOf(":")+1);
 									quaternion.setText(data);
+									if(recordInfo)
+									{
+										recorder.setQuaternion(data);
+									}
 								}else if(buf.contains("DesireBodyRate:"))
 								{
 									data=buf.substring(buf.indexOf(":")+1);
 									desiredBodyRate.setText(data);
+									if(recordInfo)
+									{
+										recorder.setBodyRate(data);
+									}
 								}else if(buf.contains("Force&Torque:"))
 								{
 									data=buf.substring(buf.indexOf(":")+1);
 									forceTorque.setText(data);
+									if(recordInfo)
+									{
+										recorder.setForceTorque(data);
+									}
 								}else if(buf.contains("ESC:") )
 								{
 									data=buf.substring(buf.indexOf(":")+1);
 									escOutput.setText(data);
+									if(recordInfo)
+									{
+										recorder.setEscOutput(data);
+									}
 								}
 							}								
 							rbuf="";
+							if(recordInfo)
+							{
+								recorder.recordFrame();
+							}
 						}
 					});
 					
@@ -276,6 +341,39 @@ public class MainFrame extends Thread
 		panel.add(baudRate);
 		baudRate.setColumns(10);
 		panel.add(connect);
+		
+		final JButton flightRecorderButton = new JButton("\u5F00\u59CB\u5F55\u5236");
+		flightRecorderButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(recordInfo)//已经开始录制了，用户要停止
+				{
+					flightRecorderButton.setText("开始录制");	
+					if(out!=null)
+					{
+						out.close();
+					}
+					
+				}else//用户要开始录制了
+				{
+					flightRecorderButton.setText("停止录制");
+					try
+					{
+						FileWriter outf=new FileWriter(flightInfo);
+						out=new PrintWriter(outf);
+						recorder=new flightRecorder(out);
+						recorder.printTitle();
+					} catch (Exception e1)
+					{
+						uavInfo.setText(e1.getMessage());
+						
+					}
+					
+				}					
+				recordInfo=!recordInfo;
+				
+			}
+		});
+		panel.add(flightRecorderButton);
 		uavInfo = new JTextPane();
 		uavInfo.setEditable(false);
 		uavInfo.setFont(new Font("微软雅黑", Font.PLAIN, 17));
@@ -481,4 +579,99 @@ class SerialPortsModel
 	{
 		return this.defaultModel;
 	}
+}
+class flightRecorder
+{
+	private PrintWriter out;
+	private String outerLoop="";
+	private String innerLoop="";
+	private String bodyAngle[]=new String[3];
+	private String quaternion[]=new String[4];
+	private String bodyRate[]=new String[3];
+	private String ForceTorque[]=new String[6];
+	private String escOutput[]=new String[8];
+	private String RC[] =new String[6];
+	//private String 
+	public flightRecorder()
+	{
+		// TODO 自动生成的构造函数存根
+	}
+	public flightRecorder(PrintWriter out)
+	{
+		this.out=out;// TODO 自动生成的构造函数存根
+	}
+	public void setOutputStream(PrintWriter out)
+	{
+		this.out=out;
+	}
+	public void printTitle()
+	{
+		out.println("时间,外环频率,内环频率,遥控滚转,遥控俯仰,遥控偏航,遥控x,遥控y,遥控z,姿态x,姿态y,姿态z,q0,q1,q2,q3,"
+				+ "外环输出x,外环输出y,外环输出z,力x,力y,力z,力矩x,力矩y,力矩z,--,"
+				+ "电机1,电机2,电机3,电机4,电机5,电机6,电机7,电机8");
+	}
+	public void recordFrame()//记录本帧数据
+	{
+		Date date=new Date();
+		out.print(date.getTime()+",");
+		out.print(outerLoop+","+innerLoop+",");
+		for(String buf:RC)//输出遥控通道
+		{
+			out.print(buf+",");
+		}
+		for(String buf:bodyAngle)
+		{
+			out.print(buf+",");
+		}
+		for(String buf:quaternion)
+		{
+			out.print(buf+",");
+		}
+		for(String buf:bodyRate)
+		{
+			out.print(buf+",");
+		}		
+		for(String buf:ForceTorque)
+		{
+			out.print(buf+",");
+		}
+		for(String buf:escOutput)
+		{
+			out.print(buf+",");
+		}
+		out.print("endOfFrame\n");
+	}
+	public void setOuterLoop(String outerLoop)
+	{
+		this.outerLoop = outerLoop;
+	}
+	public void setInnerLoop(String innerLoop)
+	{
+		this.innerLoop = innerLoop;
+	}
+	public void setBodyAngle(String bodyAngle)
+	{
+		this.bodyAngle = bodyAngle.split(" ");
+	}
+	public void setQuaternion(String quaternion)
+	{
+		this.quaternion = quaternion.split(" ");
+	}
+	public void setBodyRate(String bodyRate)
+	{
+		this.bodyRate = bodyRate.split(" ");
+	}
+	public void setForceTorque(String forceTorque)
+	{
+		ForceTorque = forceTorque.split(" ");
+	}
+	public void setEscOutput(String escOutput)
+	{
+		this.escOutput = escOutput.split(" ");
+	}
+	public void setRC(String rC)
+	{
+		RC = rC.split(" ");
+	}
+	
 }
