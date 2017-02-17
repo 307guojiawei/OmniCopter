@@ -1,13 +1,11 @@
 /*
- *  Log.cpp
+ * Log.cpp
  *
  *  Created on: 2017年2月12日
  *      Author: jiawei
  */
 #include "Log.h"
 #include <OmniCopter.h>
-
-/*Only when it is in debug mode can this class work.*/
 
 void Log::init()
 {
