@@ -9,9 +9,9 @@
 
 void Log::init()
 {
-	Serial.begin(DEBUG_SERIAL_RATE);
+	SERIALNUM.begin(DEBUG_SERIAL_RATE);
 	delay(100);
-	Serial.println("Init#");
+	SERIALNUM.println("Init#");
 }
 
 void Log::log(char* message,double value)
@@ -19,8 +19,8 @@ void Log::log(char* message,double value)
 	if(!debugEnable)return;
 	if(debugEnable&&showEnable)
 	{
-		Serial.print(micros());
-		Serial.print(message);Serial.print(": ");Serial.print(value);Serial.println("#");
+		SERIALNUM.print(micros());
+		SERIALNUM.print(message);SERIALNUM.print(": ");SERIALNUM.print(value);SERIALNUM.println("#");
 	}
 }
 
@@ -36,7 +36,7 @@ void Log::oneLoop()
 	{
 		showEnable=true;
 		showTime=0;
-		Serial.println("--$");
+		SERIALNUM.println("--$");
 	}else
 	{
 		showEnable=false;
@@ -51,13 +51,13 @@ void Log::showRcInput(OmniCopter o)
 	if(!debugEnable)return;
 	if(debugEnable&&showEnable)
 	{
-		Serial.print("RC:");
-		Serial.print(o.input.Roll[0]);Serial.print(" ");
-		Serial.print(o.input.Roll[1]);Serial.print(" ");
-		Serial.print(o.input.Roll[2]);Serial.print(" ");
-		Serial.print(o.input.Move[0]);Serial.print(" ");
-		Serial.print(o.input.Move[1]);Serial.print(" ");
-		Serial.print(o.input.Move[2]);Serial.println("#");
+		SERIALNUM.print("RC:");
+		SERIALNUM.print(o.input.Roll[0]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.input.Roll[1]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.input.Roll[2]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.input.Move[0]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.input.Move[1]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.input.Move[2]);SERIALNUM.println("#");
 	}
 }
 void Log::showFreq(OmniCopter o)
@@ -69,8 +69,8 @@ void Log::showFreq(OmniCopter o)
 	{
 		unsigned long int now=micros();
 		unsigned long int thisTime=now-this->lastTime;
-		Serial.print("OuterLoop:");Serial.print(1000000.0/(thisTime/(double)showF));Serial.println("HZ #");
-		Serial.print("InnerLoop:");Serial.print(1000000.0/(thisTime/(double)showF)*(double)INNER_OUTER_RATIO);Serial.println("HZ #");
+		SERIALNUM.print("OuterLoop:");SERIALNUM.print(1000000.0/(thisTime/(double)showF));SERIALNUM.println("HZ #");
+		SERIALNUM.print("InnerLoop:");SERIALNUM.print(1000000.0/(thisTime/(double)showF)*(double)config.INNER_OUTER_RATIO);SERIALNUM.println("HZ #");
 		this->lastTime=now;
 
 	}
@@ -80,15 +80,15 @@ void Log::showSensor(OmniCopter o)
 	if(!debugEnable)return;
 	if(debugEnable&&showEnable)
 	{
-		Serial.print("Angle:");
-		Serial.print(o.sensor.sensorRaw.bodyAngle.roll);Serial.print(" ");
-		Serial.print(o.sensor.sensorRaw.bodyAngle.pitch);Serial.print(" ");
-		Serial.print(o.sensor.sensorRaw.bodyAngle.yaw);Serial.println("# ");
-		Serial.print("Quaternion:");
-		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[0]);Serial.print(" ");
-		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[1]);Serial.print(" ");
-		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[2]);Serial.print(" ");
-		Serial.print(o.sensor.sensorRaw.bodyQuaternion.q[3]);Serial.println("# ");
+		SERIALNUM.print("Angle:");
+		SERIALNUM.print(o.sensor.sensorRaw.bodyAngle.roll);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.bodyAngle.pitch);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.bodyAngle.yaw);SERIALNUM.println("# ");
+		SERIALNUM.print("Quaternion:");
+		SERIALNUM.print(o.sensor.sensorRaw.bodyQuaternion.q[0]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.bodyQuaternion.q[1]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.bodyQuaternion.q[2]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.bodyQuaternion.q[3]);SERIALNUM.println("# ");
 	}
 }
 void Log::showForce(OmniCopter o)
@@ -96,17 +96,17 @@ void Log::showForce(OmniCopter o)
 	if(!debugEnable)return;
 	if(debugEnable&&showEnable)
 	{
-		Serial.print("DesireBodyRate:");
-		Serial.print(o.desiredBodyRate.rollRate);Serial.print(" ");
-		Serial.print(o.desiredBodyRate.pitchRate);Serial.print(" ");
-		Serial.print(o.desiredBodyRate.yawRate);Serial.println("# ");
-		Serial.print("Force&Torque:");
-		Serial.print(o.desiredCondition.fDes[0]);Serial.print(" ");
-		Serial.print(o.desiredCondition.fDes[1]);Serial.print(" ");
-		Serial.print(o.desiredCondition.fDes[2]);Serial.print(" ");
-		Serial.print(o.desiredCondition.tDes[0]);Serial.print(" ");
-		Serial.print(o.desiredCondition.tDes[1]);Serial.print(" ");
-		Serial.print(o.desiredCondition.tDes[2]);Serial.println("# ");
+		SERIALNUM.print("DesireBodyRate:");
+		SERIALNUM.print(o.desiredBodyRate.rollRate);SERIALNUM.print(" ");
+		SERIALNUM.print(o.desiredBodyRate.pitchRate);SERIALNUM.print(" ");
+		SERIALNUM.print(o.desiredBodyRate.yawRate);SERIALNUM.println("# ");
+		SERIALNUM.print("Force&Torque:");
+		SERIALNUM.print(o.desiredCondition.fDes[0]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.desiredCondition.fDes[1]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.desiredCondition.fDes[2]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.desiredCondition.tDes[0]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.desiredCondition.tDes[1]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.desiredCondition.tDes[2]);SERIALNUM.println("# ");
 
 	}
 }
@@ -116,14 +116,14 @@ void Log::showEscOutput(OmniCopter o)
 	if(!debugEnable)return;
 	if(debugEnable&&showEnable)
 	{
-		Serial.print("ESC: ");
-		Serial.print(o.escDriver.prop[0]);Serial.print(" ");
-		Serial.print(o.escDriver.prop[1]);Serial.print(" ");
-		Serial.print(o.escDriver.prop[2]);Serial.print(" ");
-		Serial.print(o.escDriver.prop[3]);Serial.print(" ");
-		Serial.print(o.escDriver.prop[4]);Serial.print(" ");
-		Serial.print(o.escDriver.prop[5]);Serial.print(" ");
-		Serial.print(o.escDriver.prop[6]);Serial.print(" ");
-		Serial.print(o.escDriver.prop[7]);Serial.println("# ");
+		SERIALNUM.print("ESC: ");
+		SERIALNUM.print(o.escDriver.prop[0]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.escDriver.prop[1]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.escDriver.prop[2]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.escDriver.prop[3]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.escDriver.prop[4]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.escDriver.prop[5]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.escDriver.prop[6]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.escDriver.prop[7]);SERIALNUM.println("# ");
 	}
 }

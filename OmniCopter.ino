@@ -24,7 +24,13 @@ void InterruptService()
 		lastTime=now;
 	}
 }
-
+void SerialEvent()
+{
+	while(SERIALNUM.available())
+	{
+		config.decode(SERIALNUM.read());
+	}
+}
 //The setup function is called once at startup of the sketch
 void setup()
 {
@@ -57,7 +63,7 @@ void loop()
 	omniCopter.attitudeProcess();
 
 
-	for(int i=0;i<INNER_OUTER_RATIO;i++)
+	for(int i=0;i<config.INNER_OUTER_RATIO;i++)
 	{
 		omniCopter.bodyRateProcess();
 		omniCopter.positionProcess();

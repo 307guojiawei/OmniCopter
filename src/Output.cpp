@@ -5,7 +5,7 @@
  *      Author: jiawei
  */
 #include "OmniCopter.h"
-
+#include "Config.h"
 PropData EscDriver::getPropData()
 {
 	return this->propData;
@@ -29,17 +29,17 @@ void EscDriver::escInit()
 }
 void EscDriver::excute()
 {
-	prop[0]=map((long )ceil(propData.fProp[0]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	prop[1]=map((long )ceil(propData.fProp[1]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	prop[2]=map((long )ceil(propData.fProp[2]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	prop[3]=map((long )ceil(propData.fProp[3]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	prop[4]=map((long )ceil(propData.fProp[4]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	prop[5]=map((long )ceil(propData.fProp[5]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	prop[6]=map((long )ceil(propData.fProp[6]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
-	prop[7]=map((long )ceil(propData.fProp[7]*PERCISION),F_PORP_MIN*PERCISION,F_PROP_MAX*PERCISION,ESC_MIN,ESC_MAX);
+	prop[0]=map((long )ceil(propData.fProp[0]*config.PERCISION),config.F_PROP_MIN*config.PERCISION,config.F_PROP_MAX*config.PERCISION,ESC_MIN,ESC_MAX);
+	prop[1]=map((long )ceil(propData.fProp[1]*config.PERCISION),config.F_PROP_MIN*config.PERCISION,config.F_PROP_MAX*config.PERCISION,ESC_MIN,ESC_MAX);
+	prop[2]=map((long )ceil(propData.fProp[2]*config.PERCISION),config.F_PROP_MIN*config.PERCISION,config.F_PROP_MAX*config.PERCISION,ESC_MIN,ESC_MAX);
+	prop[3]=map((long )ceil(propData.fProp[3]*config.PERCISION),config.F_PROP_MIN*config.PERCISION,config.F_PROP_MAX*config.PERCISION,ESC_MIN,ESC_MAX);
+	prop[4]=map((long )ceil(propData.fProp[4]*config.PERCISION),config.F_PROP_MIN*config.PERCISION,config.F_PROP_MAX*config.PERCISION,ESC_MIN,ESC_MAX);
+	prop[5]=map((long )ceil(propData.fProp[5]*config.PERCISION),config.F_PROP_MIN*config.PERCISION,config.F_PROP_MAX*config.PERCISION,ESC_MIN,ESC_MAX);
+	prop[6]=map((long )ceil(propData.fProp[6]*config.PERCISION),config.F_PROP_MIN*config.PERCISION,config.F_PROP_MAX*config.PERCISION,ESC_MIN,ESC_MAX);
+	prop[7]=map((long )ceil(propData.fProp[7]*config.PERCISION),config.F_PROP_MIN*config.PERCISION,config.F_PROP_MAX*config.PERCISION,ESC_MIN,ESC_MAX);
 	for(int i=0;i<8;i++)
 	{
-		if(prop[i]<ESC_MID+ESC_START_POINT&&prop[i]>ESC_MID-ESC_START_POINT)
+		if(prop[i]<ESC_MID+config.ESC_START_POINT&&prop[i]>ESC_MID-config.ESC_START_POINT)
 		{
 			prop[i]=ESC_MID;
 		}

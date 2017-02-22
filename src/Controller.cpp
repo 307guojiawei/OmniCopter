@@ -30,13 +30,13 @@ void AttitudeController::process(Input_Converted desireInput,Sensor_Raw sensorDa
 	ff.rollRate=qBuff.q[1];
 	ff.pitchRate=qBuff.q[2];
 	ff.yawRate=qBuff.q[3];
-	desireBodyRate.rollRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[1]+ff.rollRate*FEED_FORWARD_RATIO;
-	desireBodyRate.pitchRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[2]+ff.pitchRate*FEED_FORWARD_RATIO;
-	desireBodyRate.yawRate=(2/TATT)*(qErr.q[0]>0?1:-1)*qErr.q[3]+ff.yawRate*FEED_FORWARD_RATIO;
+	desireBodyRate.rollRate=(2/config.TATT)*(qErr.q[0]>0?1:-1)*qErr.q[1]+ff.rollRate*config.FEED_FORWARD_RATIO;
+	desireBodyRate.pitchRate=(2/config.TATT)*(qErr.q[0]>0?1:-1)*qErr.q[2]+ff.pitchRate*config.FEED_FORWARD_RATIO;
+	desireBodyRate.yawRate=(2/config.TATT)*(qErr.q[0]>0?1:-1)*qErr.q[3]+ff.yawRate*config.FEED_FORWARD_RATIO;
 
-	desireBodyRate.rollRate*=DESIRE_BODY_RATE_RATIO;
-	desireBodyRate.pitchRate*=DESIRE_BODY_RATE_RATIO;
-	desireBodyRate.yawRate*=DESIRE_BODY_RATE_RATIO;
+	desireBodyRate.rollRate*=config.DESIRE_BODY_RATE_RATIO;
+	desireBodyRate.pitchRate*=config.DESIRE_BODY_RATE_RATIO;
+	desireBodyRate.yawRate*=config.DESIRE_BODY_RATE_RATIO;
 	this->desireCondition=desireBodyRate;
 }
 
@@ -47,12 +47,12 @@ DesireCondition BodyRateController::getDesireTorque()
 
 void BodyRateController::process(BodyRate desireBodyRate,Sensor_Raw sensorData)
 {
-	this->desireTorque.tDes[0]=(1/TRATE)*J*(desireBodyRate.rollRate-sensorData.bodyRate.rollRate)+(sensorData.bodyRate.pitchRate*J*sensorData.bodyRate.yawRate-sensorData.bodyRate.yawRate*J*sensorData.bodyRate.pitchRate);
-	this->desireTorque.tDes[1]=(1/TRATE)*J*(desireBodyRate.pitchRate-sensorData.bodyRate.pitchRate)+(sensorData.bodyRate.yawRate*J*sensorData.bodyRate.rollRate-sensorData.bodyRate.rollRate*J*sensorData.bodyRate.yawRate);
-	this->desireTorque.tDes[2]=(1/TRATE)*J*(desireBodyRate.yawRate-sensorData.bodyRate.yawRate)+(sensorData.bodyRate.rollRate*J*sensorData.bodyRate.pitchRate-sensorData.bodyRate.pitchRate*J*sensorData.bodyRate.rollRate);
-	this->desireTorque.tDes[0]*=DESIRE_CONDITION_TORQUE_RATIO;
-	this->desireTorque.tDes[1]*=DESIRE_CONDITION_TORQUE_RATIO;
-	this->desireTorque.tDes[2]*=DESIRE_CONDITION_TORQUE_RATIO;
+	this->desireTorque.tDes[0]=(1/config.TRATE)*config.J*(desireBodyRate.rollRate-sensorData.bodyRate.rollRate)+(sensorData.bodyRate.pitchRate*config.J*sensorData.bodyRate.yawRate-sensorData.bodyRate.yawRate*config.J*sensorData.bodyRate.pitchRate);
+	this->desireTorque.tDes[1]=(1/config.TRATE)*config.J*(desireBodyRate.pitchRate-sensorData.bodyRate.pitchRate)+(sensorData.bodyRate.yawRate*config.J*sensorData.bodyRate.rollRate-sensorData.bodyRate.rollRate*config.J*sensorData.bodyRate.yawRate);
+	this->desireTorque.tDes[2]=(1/config.TRATE)*config.J*(desireBodyRate.yawRate-sensorData.bodyRate.yawRate)+(sensorData.bodyRate.rollRate*config.J*sensorData.bodyRate.pitchRate-sensorData.bodyRate.pitchRate*config.J*sensorData.bodyRate.rollRate);
+	this->desireTorque.tDes[0]*=config.DESIRE_CONDITION_TORQUE_RATIO;
+	this->desireTorque.tDes[1]*=config.DESIRE_CONDITION_TORQUE_RATIO;
+	this->desireTorque.tDes[2]*=config.DESIRE_CONDITION_TORQUE_RATIO;
 }
 
 DesireCondition PositionController::getDesireCondition()
@@ -66,9 +66,9 @@ void PositionController::process(Input_Converted input,Sensor_Raw sensorData,Des
 	this->desireCondition.fDes[0]=input.Move[0];
 	this->desireCondition.fDes[1]=input.Move[1];
 	this->desireCondition.fDes[2]=input.Move[2];
-	this->desireCondition.fDes[0]*=DESIRE_CONDITION_FORCE_RATIO;
-	this->desireCondition.fDes[1]*=DESIRE_CONDITION_FORCE_RATIO;
-	this->desireCondition.fDes[2]*=DESIRE_CONDITION_FORCE_RATIO;
+	this->desireCondition.fDes[0]*=config.DESIRE_CONDITION_FORCE_RATIO;
+	this->desireCondition.fDes[1]*=config.DESIRE_CONDITION_FORCE_RATIO;
+	this->desireCondition.fDes[2]*=config.DESIRE_CONDITION_FORCE_RATIO;
 }
 
 PropData ControlAllocator::getPropData()
@@ -80,13 +80,13 @@ void ControlAllocator::process(DesireCondition d)
 {
 	for(int i=0;i<3;i++)
 	{
-		if(abs(d.fDes[i])>DESIRE_CONDITION_F_MAX)
+		if(abs(d.fDes[i])>config.DESIRE_CONDITION_F_MAX)
 		{
-			d.fDes[i]=d.fDes[i]>0?DESIRE_CONDITION_F_MAX:-DESIRE_CONDITION_F_MAX;
+			d.fDes[i]=d.fDes[i]>0?config.DESIRE_CONDITION_F_MAX:-config.DESIRE_CONDITION_F_MAX;
 		}
-		if(abs(d.tDes[i])>DESIRE_CONDITION_TORQUE_MAX)
+		if(abs(d.tDes[i])>config.DESIRE_CONDITION_TORQUE_MAX)
 		{
-			d.tDes[i]=d.tDes[i]>0?DESIRE_CONDITION_TORQUE_MAX:-DESIRE_CONDITION_TORQUE_MAX;
+			d.tDes[i]=d.tDes[i]>0?config.DESIRE_CONDITION_TORQUE_MAX:-config.DESIRE_CONDITION_TORQUE_MAX;
 		}
 	}
 	this->propData.fProp[0]=-0.295753175473055*d.fDes[0]+0.079246824526945*d.fDes[1]+0.216506350946110*d.fDes[2]+0.045753175473055*d.tDes[0]-0.170753175473055*d.tDes[1]+0.125*d.tDes[2];
