@@ -23,14 +23,14 @@ void InterruptService()
 		}
 		lastTime=now;
 	}
-}
-void SerialEvent()
+}/*
+void Serial1Event()
 {
 	while(SERIALNUM.available())
 	{
 		config.decode(SERIALNUM.read());
 	}
-}
+}*/
 //The setup function is called once at startup of the sketch
 void setup()
 {

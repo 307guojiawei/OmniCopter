@@ -11,7 +11,7 @@ void Log::init()
 {
 	SERIALNUM.begin(DEBUG_SERIAL_RATE);
 	delay(100);
-	SERIALNUM.println("Init#");
+	//SERIALNUM.println("Init#");
 }
 
 void Log::log(char* message,double value)

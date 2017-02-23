@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TooManyListenersException;
 
 import Bean.Attribute;
 import Bean.AttributeList;
@@ -18,13 +19,12 @@ public class AttributeSettingDao
 	private OutputStream os;
 	private InputStream is;
 	private SerialPort serialPort;
-	private SerialEvent serialEvent;
+
 	private ArrayList<Attribute> attributeListBuffer;
 	public AttributeSettingDao(SerialPort serialPort)
 	{
 		this.serialPort=serialPort;
 		this.attributeListBuffer=new ArrayList<Attribute>();
-		this.serialEvent=new SerialEvent(attributeListBuffer);
 	}
 	public AttributeSettingDao()
 	{
@@ -34,15 +34,21 @@ public class AttributeSettingDao
 	{
 		this.serialPort=serialPort;
 	}
-	public SerialEvent getSerialEventListener()
-	{
-		return this.serialEvent;
-	}	
 	
-	public void getAttributesFromUav()
+	
+	public void getAttributesFromUav(SerialPort serialPort)
 	{
+		this.serialPort=serialPort;
+//		try
+//		{
+//			this.serialPort.addEventListener(serialEvent);
+//		} catch (TooManyListenersException e)
+//		{
+//			// TODO 自动生成的 catch 块
+//			e.printStackTrace();
+//		}
 		this.sendRequestToUav();	
-		for(int i=0;i<10000000;i++);
+		for(int i=0;i<100000000;i++);
 	}
 	
 	public void setAttributeToUav(Attribute attribute)
@@ -70,7 +76,7 @@ public class AttributeSettingDao
 	private void sendRequestToUav()
 	{
 		try
-		{
+		{			
 			OutputStream os=this.serialPort.getOutputStream();
 			os.write(new byte[]{0x51,0x15,0x51,0x01,0x01});
 			os.flush();
@@ -81,50 +87,9 @@ public class AttributeSettingDao
 		}
 		
 	}
-	class SerialEvent implements SerialPortEventListener
-	{
-		private String buffer;
-		private ArrayList<Attribute> attributeListBuffer;
-		public SerialEvent(ArrayList<Attribute> list)
-		{
-			this.buffer=new String();
-			attributeListBuffer=list;
-		}
-		@Override
-		public void serialEvent(SerialPortEvent arg0)
-		{
-			try
-			{
-				InputStream is=serialPort.getInputStream();
-				Scanner input=new Scanner(is);
-				while(input.hasNext())
-				{
-					String buf=input.next();
-					if(buf.contains(";"))
-					{
-						buffer+=buf.substring(0, buf.indexOf(";"));
-						decode();
-						buffer=buf.substring(buf.indexOf(";")+1);
-					}
-				}
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-			
-		}
 		
-		private void decode()
-		{
-			Attribute attribute=new Attribute();
-			String buf[]=buffer.split(",");
-			attribute.setId(buf[0]);
-			attribute.setName(buf[1]);
-			attribute.setDataType(buf[2]);
-			attribute.setValue(buf[3]);
-			AttributeList.getInstance().addAttribute(attribute);
-		}
 		
-	}
+		
+	
 }
 

@@ -99,9 +99,9 @@ void Config::decode(unsigned char data)
 	}else if(count==4)//数据位2
 	{
 		buf[count]=data;
-		int* p;
-		p=(int*)&buf[3];
-		int value=*p;
+		int value=(int)buf[3];
+		value<<=8;
+		value+=buf[4];
 		switch(buf[2])
 		{
 		case percision:
@@ -138,10 +138,8 @@ void Config::decode(unsigned char data)
 		case desireConditionTorqueRatio:
 			setDesireConditionTorqueRatio(value/1000.0);break;
 		case 0x51:
-			if(value==0x0101)
-			{
-				encode();
-			}
+			encode();
+			//digitalWrite(LED_BUILTIN,LOW);
 			break;
 		}
 		count=0;
@@ -152,21 +150,21 @@ void Config::decode(unsigned char data)
 }
 void Config::encode()
 {
-	SERIALNUM.print(percision);				SERIALNUM.print(",");SERIALNUM.print("精度percision");SERIALNUM.print(",");SERIALNUM.print("i");SERIALNUM.print(",");SERIALNUM.print(PERCISION);SERIALNUM.print(";");
-	SERIALNUM.print(rcPercicion);				SERIALNUM.print(",");SERIALNUM.print("遥控器精度rcPercicion");SERIALNUM.print(",");SERIALNUM.print("i");SERIALNUM.print(",");SERIALNUM.print(RC_PERCISION);SERIALNUM.print(";");
-	SERIALNUM.print(escStartPoint);			SERIALNUM.print(",");SERIALNUM.print("电调空程escStartPoint");SERIALNUM.print(",");SERIALNUM.print("i");SERIALNUM.print(",");SERIALNUM.print(ESC_START_POINT);SERIALNUM.print(";");
-	SERIALNUM.print(desireConditionFMax);		SERIALNUM.print(",");SERIALNUM.print("内环输出力最大值desiredConditionFMax");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_F_MAX);SERIALNUM.print(";");
-	SERIALNUM.print(desireConditionTorqueMax);	SERIALNUM.print(",");SERIALNUM.print("内环输出力矩最大值desiredConditionTorqueMax");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_TORQUE_MAX);SERIALNUM.print(";");
-	SERIALNUM.print(fPropMin);					SERIALNUM.print(",");SERIALNUM.print("螺旋桨推力最小值");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(F_PROP_MIN);SERIALNUM.print(";");
-	SERIALNUM.print(fPropMax);					SERIALNUM.print(",");SERIALNUM.print("螺旋桨推力最大值");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(F_PROP_MAX);SERIALNUM.print(";");
-	SERIALNUM.print(tAtt);						SERIALNUM.print(",");SERIALNUM.print("外环时间常数tatt");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(TATT);SERIALNUM.print(";");
-	SERIALNUM.print(tRate);					SERIALNUM.print(",");SERIALNUM.print("内环时间常数trate");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(TRATE);SERIALNUM.print(";");
-	SERIALNUM.print(j);						SERIALNUM.print(",");SERIALNUM.print("转动惯量j");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(J);SERIALNUM.print(";");
-	SERIALNUM.print(innerOuterRatio);			SERIALNUM.print(",");SERIALNUM.print("内外环运算比innerOuterRatio");SERIALNUM.print(",");SERIALNUM.print("i");SERIALNUM.print(",");SERIALNUM.print(INNER_OUTER_RATIO);SERIALNUM.print(";");
-	SERIALNUM.print(desireBodyRateRatio);		SERIALNUM.print(",");SERIALNUM.print("外环增益desireBodyRateRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_BODY_RATE_RATIO);SERIALNUM.print(";");
-	SERIALNUM.print(feedForwardRatio);			SERIALNUM.print(",");SERIALNUM.print("前馈增益feedForwardRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(FEED_FORWARD_RATIO);SERIALNUM.print(";");
-	SERIALNUM.print(desireConditionForceRatio);SERIALNUM.print(",");SERIALNUM.print("内环输出力增益desireConditionForceRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_FORCE_RATIO);SERIALNUM.print(";");
-	SERIALNUM.print(desireConditionTorqueRatio);SERIALNUM.print(",");SERIALNUM.print("内环输出力矩增益desireConditionTorqueRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_TORQUE_RATIO);SERIALNUM.print(";");
+	SERIALNUM.print(percision);				SERIALNUM.print(",");SERIALNUM.print("percision");SERIALNUM.print(",");SERIALNUM.print("i");SERIALNUM.print(",");SERIALNUM.print(PERCISION);SERIALNUM.println(";");
+	SERIALNUM.print(rcPercicion);				SERIALNUM.print(",");SERIALNUM.print("rcPercicion");SERIALNUM.print(",");SERIALNUM.print("i");SERIALNUM.print(",");SERIALNUM.print(RC_PERCISION);SERIALNUM.println(";");
+	SERIALNUM.print(escStartPoint);			SERIALNUM.print(",");SERIALNUM.print("escStartPoint");SERIALNUM.print(",");SERIALNUM.print("i");SERIALNUM.print(",");SERIALNUM.print(ESC_START_POINT);SERIALNUM.println(";");
+	SERIALNUM.print(desireConditionFMax);		SERIALNUM.print(",");SERIALNUM.print("desiredConditionFMax");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_F_MAX);SERIALNUM.println(";");
+	SERIALNUM.print(desireConditionTorqueMax);	SERIALNUM.print(",");SERIALNUM.print("desiredConditionTorqueMax");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_TORQUE_MAX);SERIALNUM.println(";");
+	SERIALNUM.print(fPropMin);					SERIALNUM.print(",");SERIALNUM.print("fPropMin");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(F_PROP_MIN);SERIALNUM.println(";");
+	SERIALNUM.print(fPropMax);					SERIALNUM.print(",");SERIALNUM.print("fPropMax");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(F_PROP_MAX);SERIALNUM.println(";");
+	SERIALNUM.print(tAtt);						SERIALNUM.print(",");SERIALNUM.print("tatt");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(TATT);SERIALNUM.println(";");
+	SERIALNUM.print(tRate);					SERIALNUM.print(",");SERIALNUM.print("trate");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(TRATE);SERIALNUM.println(";");
+	SERIALNUM.print(j);						SERIALNUM.print(",");SERIALNUM.print("j");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(J);SERIALNUM.println(";");
+	SERIALNUM.print(innerOuterRatio);			SERIALNUM.print(",");SERIALNUM.print("innerOuterRatio");SERIALNUM.print(",");SERIALNUM.print("i");SERIALNUM.print(",");SERIALNUM.print(INNER_OUTER_RATIO);SERIALNUM.println(";");
+	SERIALNUM.print(desireBodyRateRatio);		SERIALNUM.print(",");SERIALNUM.print("desireBodyRateRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_BODY_RATE_RATIO);SERIALNUM.println(";");
+	SERIALNUM.print(feedForwardRatio);			SERIALNUM.print(",");SERIALNUM.print("feedForwardRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(FEED_FORWARD_RATIO);SERIALNUM.println(";");
+	SERIALNUM.print(desireConditionForceRatio);SERIALNUM.print(",");SERIALNUM.print("desireConditionForceRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_FORCE_RATIO);SERIALNUM.println(";");
+	SERIALNUM.print(desireConditionTorqueRatio);SERIALNUM.print(",");SERIALNUM.print("desireConditionTorqueRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_TORQUE_RATIO);SERIALNUM.println(";");
 }
 
 

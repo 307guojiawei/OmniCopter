@@ -127,6 +127,7 @@ public class MainFrame extends Thread
 		serialPortsModel=new SerialPortsModel();
 		
 		frmOmnicopterGcs = new JFrame();
+		frmOmnicopterGcs.setResizable(false);
 		frmOmnicopterGcs.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -191,6 +192,22 @@ public class MainFrame extends Thread
 			}
 		});
 		menu_1.add(menuItem_1);
+		
+		JMenuItem menuItem_3 = new JMenuItem("\u6253\u5F00\u53C2\u6570\u8C03\u8BD5\u5668");
+		menuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(serialPort!=null)
+				{
+					serialPort.removeEventListener();
+					serialPort.close();
+				}
+				
+				AttributeSetting attributeSetting=new AttributeSetting();
+				attributeSetting.excute();
+				
+			}
+		});
+		menu_1.add(menuItem_3);
 		
 		JPanel panel = new JPanel();
 		frmOmnicopterGcs.getContentPane().add(panel, BorderLayout.SOUTH);
@@ -401,8 +418,12 @@ public class MainFrame extends Thread
 		JButton closeSerial = new JButton("\u5173\u95ED");
 		closeSerial.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				serialPort.removeEventListener();
-				serialPort.close();
+				if(serialPort!=null)
+				{
+					serialPort.removeEventListener();
+					serialPort.close();
+				}
+				
 			}
 		});
 		panel.add(closeSerial);

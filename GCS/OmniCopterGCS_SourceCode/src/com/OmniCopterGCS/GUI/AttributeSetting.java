@@ -25,6 +25,7 @@ import javax.swing.ListSelectionModel;
 
 import Bean.Attribute;
 import Bean.AttributeList;
+import Bean.ThreadInfo;
 import Dao.AttributeSettingDao;
 
 import javax.swing.JSeparator;
@@ -49,13 +50,20 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.UIManager;
+
+import java.awt.Window.Type;
+import java.awt.Font;
 
 public class AttributeSetting
 {
 
-	private JFrame frame;
+	private JFrame frmAttributeTunning;
 	private JTextField attributeName;
 	private JTextField attributeValue;
 	private SerialPort serialPort;
@@ -64,12 +72,14 @@ public class AttributeSetting
 	private SerialPortsModel serialPortsModel;
 	protected ArrayList<String> ports;
 	private AttributeSettingDao attributeSettingDao;
+	private static boolean isActivate=false;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String args[])
+	public  void excute()
 	{
+		if(isActivate)return;
 		EventQueue.invokeLater(new Runnable()
 		{
 			public void run()
@@ -77,7 +87,8 @@ public class AttributeSetting
 				try
 				{
 					AttributeSetting window = new AttributeSetting();
-					window.frame.setVisible(true);
+					window.frmAttributeTunning.setVisible(true);
+					isActivate=true;
 				} catch (Exception e)
 				{
 					e.printStackTrace();
@@ -100,16 +111,78 @@ public class AttributeSetting
 	private void initialize()
 	{
 		this.serialPortsModel=new SerialPortsModel();
-		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmAttributeTunning = new JFrame();
+		frmAttributeTunning.setType(Type.UTILITY);
+		frmAttributeTunning.setAlwaysOnTop(true);
+		frmAttributeTunning.setTitle("Attribute tunning");
+		frmAttributeTunning.setBounds(100, 100, 550, 370);
+		frmAttributeTunning.addWindowListener(new WindowListener()
+		{
+			
+			@Override
+			public void windowOpened(WindowEvent e)
+			{
+				ThreadInfo.getInstance().setInfo("AttributeSetting", "t");// TODO 自动生成的方法存根
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e)
+			{
+				// TODO 自动生成的方法存根
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e)
+			{
+				// TODO 自动生成的方法存根
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e)
+			{
+				// TODO 自动生成的方法存根
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e)
+			{
+				frmAttributeTunning.setVisible(false);
+				ThreadInfo.getInstance().setInfo("AttributeSetting", "f");
+				if(serialPort!=null)
+				{
+					serialPort.removeEventListener();
+					serialPort.close();
+				}
+				isActivate=false;
+				
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e)
+			{
+				// TODO 自动生成的方法存根
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e)
+			{
+				// TODO 自动生成的方法存根
+				
+			}
+		});
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(Color.WHITE);
-		frame.setJMenuBar(menuBar);
+		frmAttributeTunning.setJMenuBar(menuBar);
 		
-		JMenu menu = new JMenu("\u6587\u4EF6");
-		menu.setBackground(Color.LIGHT_GRAY);
+		JMenu menu = new JMenu("\u6587 \u4EF6");
+		menu.setBackground(UIManager.getColor("Button.shadow"));
 		menuBar.add(menu);
 		
 		JMenuItem menuItem = new JMenuItem("\u52A0\u8F7D\u914D\u7F6E\u6587\u4EF6");
@@ -117,6 +190,17 @@ public class AttributeSetting
 		
 		JMenuItem menuItem_1 = new JMenuItem("\u4FDD\u5B58\u914D\u7F6E\u6587\u4EF6");
 		menu.add(menuItem_1);
+		
+		JMenu menu_1 = new JMenu("\u7F16 \u8F91");
+		menuBar.add(menu_1);
+		
+		JMenuItem menuItem_2 = new JMenuItem("\u5237\u65B0\u53C2\u6570\u8868");
+		menuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				attributeModel.refresh();
+			}
+		});
+		menu_1.add(menuItem_2);
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new CompoundBorder());
@@ -155,10 +239,12 @@ public class AttributeSetting
 				{
 					attributeSettingDao=new AttributeSettingDao();
 					serialPort=SerialTool.openPort((String)serialPortComboBox.getSelectedItem(), new Integer(baudRate.getText()).intValue());
-					SerialTool.addListener(serialPort,attributeSettingDao.getSerialEventListener());
+					//SerialTool.addListener(serialPort,attributeSettingDao.getSerialEventListener());
+					
 					
 				} catch (Exception e1)
 				{
+					e1.printStackTrace();
 				}
 			}
 		});
@@ -169,14 +255,19 @@ public class AttributeSetting
 		JButton disconnect = new JButton("\u65AD\u5F00");
 		disconnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				serialPort.removeEventListener();
-				serialPort.close();
+				if(serialPort!=null)
+				{
+					ThreadInfo.getInstance().setInfo("AttributeSetting", "f");
+					serialPort.removeEventListener();
+					serialPort.close();
+				}
+				
 			}
 		});
 		panel.add(disconnect);
 		
 		JPanel bottomBar = new JPanel();
-		frame.getContentPane().add(bottomBar, BorderLayout.SOUTH);
+		frmAttributeTunning.getContentPane().add(bottomBar, BorderLayout.SOUTH);
 		
 		final JLabel attributeId = new JLabel("id");
 		attributeId.setVisible(false);
@@ -189,14 +280,14 @@ public class AttributeSetting
 		attributeName.setEnabled(false);
 		attributeName.setEditable(false);
 		bottomBar.add(attributeName);
-		attributeName.setColumns(6);
+		attributeName.setColumns(10);
 		
 		JLabel label_1 = new JLabel("\u5C5E\u6027\u503C");
 		bottomBar.add(label_1);
 		
 		attributeValue = new JTextField();
 		bottomBar.add(attributeValue);
-		attributeValue.setColumns(10);
+		attributeValue.setColumns(5);
 		
 		JButton writeAttribute = new JButton("\u5199\u5165");
 		writeAttribute.addActionListener(new ActionListener() {
@@ -206,21 +297,34 @@ public class AttributeSetting
 				attribute.setName(attributeName.getText());
 				attribute.setValue(attributeValue.getText());
 				attributeSettingDao.setAttributeToUav(attribute);
-				
-				attributeSettingDao.getAttributesFromUav();
-				attributeModel.refresh();
+				/*
+				attributeSettingDao.getAttributesFromUav(serialPort);
+				attributeModel.refresh();*/
 			}
 		});
 		bottomBar.add(writeAttribute);
 		
-		JButton refresh = new JButton("\u5237\u65B0");
+		JButton refresh = new JButton("\u8BFB\u53D6");
 		refresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				attributeSettingDao.getAttributesFromUav();
-				attributeModel.refresh();
+				
+				attributeSettingDao.getAttributesFromUav(serialPort);
+				
+				new SerialReadingThread(serialPort).start();
+				
+				
+				//attributeModel.refresh();
 			}
 		});
 		bottomBar.add(refresh);
+		
+		JButton button = new JButton("\u5237\u65B0");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				attributeModel.refresh();
+			}
+		});
+		bottomBar.add(button);
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);
@@ -228,12 +332,15 @@ public class AttributeSetting
 		
 		JPanel dataPanel = new JPanel();
 		dataPanel.setBorder(null);
-		frame.getContentPane().add(dataPanel, BorderLayout.CENTER);
+		frmAttributeTunning.getContentPane().add(dataPanel, BorderLayout.CENTER);
 		dataPanel.setLayout(new BorderLayout(0, 0));
 		
 		final JList<String> attributeList = new JList<String>();
+		attributeList.setLayoutOrientation(JList.VERTICAL_WRAP);
+		attributeList.setFont(new Font("微软雅黑 Light", Font.PLAIN, 16));
 		attributeList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
+				if(attributeList.getSelectedIndex()<0)return;
 				Attribute attribute=AttributeList.getInstance().findAttributeByNo(attributeList.getSelectedIndex());
 				attributeName.setText(attribute.getName());
 				attributeValue.setText(attribute.getValue());
@@ -242,7 +349,15 @@ public class AttributeSetting
 		});
 		
 		this.attributeModel=new AttributeModel(attributeList);
-		attributeList.setModel(attributeModel.getModel());
+		attributeList.setModel(new AbstractListModel() {
+			String[] values = new String[] {};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
 		attributeList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		
 		dataPanel.add(attributeList);		

@@ -39,6 +39,7 @@ public class AttributeList
 	}
 	public Attribute findAttributeByNo(int num)
 	{
+		if(num<0)return null;
 		return this.attributeArrayList.get(num);
 	}
 	public void addAttribute(Attribute attribute)
@@ -48,6 +49,10 @@ public class AttributeList
 			this.deleteAttributeById(attribute.getId());
 		}
 		this.attributeArrayList.add(attribute);
+	}
+	public void clearAll()
+	{
+		this.attributeArrayList.clear();
 	}
 	public void deleteAttributeById(String id)
 	{

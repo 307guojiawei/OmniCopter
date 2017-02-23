@@ -22,7 +22,7 @@
 //#define MEGA_2560	//目标单片机
 #define DEBUG_MODE	//调试模式
 #define DEBUG_SERIAL_RATE 115200
-#define SERIALNUM	Serial1	//串口对象
+#define SERIALNUM	Serial	//串口对象
 
 #define PPM_INT 0	//ppm閬ユ帶淇″彿杈撳叆,鏈€间负涓柇寮曡剼瀵瑰簲鐨勪腑鏂簭鍙?
 
@@ -87,9 +87,9 @@ public:
 	double TRATE= 7.0;		//出现在公式21中，内环时间常数，倒数看作p参数
 	double J=0.023;			//出现在公式21中，转动惯量
 	int INNER_OUTER_RATIO= 10;	//控制环中内外环运算比
-	double DESIRE_BODY_RATE_RATIO= 15.0;	//外环向内环输出的控制量的增益
+	double DESIRE_BODY_RATE_RATIO= 1.0;	//外环向内环输出的控制量的增益
 	double DESIRE_CONDITION_FORCE_RATIO= 1.0;	//内环向控制分配输出的力的增益
-	double DESIRE_CONDITION_TORQUE_RATIO= 34.0;	//内环向控制分配输出的力矩的增益
+	double DESIRE_CONDITION_TORQUE_RATIO= 1.0;	//内环向控制分配输出的力矩的增益
 	double FEED_FORWARD_RATIO=	1.0;		//前馈增益
 
 	void setDesireBodyRateRatio(double desireBodyRateRatio = 15.0) {
