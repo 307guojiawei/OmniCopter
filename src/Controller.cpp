@@ -13,14 +13,24 @@ BodyRate AttitudeController::getDesireBodyRate()
 
 void AttitudeController::process(Input_Converted desireInput,Sensor_Raw sensorData)
 {
+	static Quaternion qLast;
+	static bool isFirst=true;
+	if(isFirst)
+	{
+		qLast=desireInput.Roll;
+		isFirst=false;
+	}
+
 	Quaternion qErr=sensorData.bodyQuaternion.reverse()*desireInput.Roll;	//18
 	BodyRate desireBodyRate,ff;	//19，ff为20
+	/*
 	Quaternion qX;
 	qX.q[0]=0;
 	qX.q[1]=sensorData.bodyRate.rollRate;
 	qX.q[2]=sensorData.bodyRate.pitchRate;
 	qX.q[3]=sensorData.bodyRate.yawRate;
-	Quaternion qdot=desireInput.Roll.constantMutiply(0.5)*qX;
+	Quaternion qdot=desireInput.Roll.constantMutiply(0.5)*qX;*/
+	Quaternion qdot=desireInput.Roll-qLast;
 	Quaternion qBuff=qErr.constantMutiply(2);
 	Quaternion qBuff2=desireInput.Roll.reverse();
 	qBuff=qBuff*qBuff2;
@@ -38,6 +48,7 @@ void AttitudeController::process(Input_Converted desireInput,Sensor_Raw sensorDa
 	desireBodyRate.pitchRate*=config.DESIRE_BODY_RATE_RATIO;
 	desireBodyRate.yawRate*=config.DESIRE_BODY_RATE_RATIO;
 	this->desireCondition=desireBodyRate;
+	qLast=desireInput.Roll;
 }
 
 DesireCondition BodyRateController::getDesireTorque()
@@ -47,9 +58,9 @@ DesireCondition BodyRateController::getDesireTorque()
 
 void BodyRateController::process(BodyRate desireBodyRate,Sensor_Raw sensorData)
 {
-	this->desireTorque.tDes[0]=(1/config.TRATE)*config.J*(desireBodyRate.rollRate-sensorData.bodyRate.rollRate)+(sensorData.bodyRate.pitchRate*config.J*sensorData.bodyRate.yawRate-sensorData.bodyRate.yawRate*config.J*sensorData.bodyRate.pitchRate);
-	this->desireTorque.tDes[1]=(1/config.TRATE)*config.J*(desireBodyRate.pitchRate-sensorData.bodyRate.pitchRate)+(sensorData.bodyRate.yawRate*config.J*sensorData.bodyRate.rollRate-sensorData.bodyRate.rollRate*config.J*sensorData.bodyRate.yawRate);
-	this->desireTorque.tDes[2]=(1/config.TRATE)*config.J*(desireBodyRate.yawRate-sensorData.bodyRate.yawRate)+(sensorData.bodyRate.rollRate*config.J*sensorData.bodyRate.pitchRate-sensorData.bodyRate.pitchRate*config.J*sensorData.bodyRate.rollRate);
+	this->desireTorque.tDes[0]=(1/config.TRATE)*config.J*(desireBodyRate.rollRate-sensorData.bodyRate.rollRate);
+	this->desireTorque.tDes[1]=(1/config.TRATE)*config.J*(desireBodyRate.pitchRate-sensorData.bodyRate.pitchRate);
+	this->desireTorque.tDes[2]=(1/config.TRATE)*config.J*(desireBodyRate.yawRate-sensorData.bodyRate.yawRate);
 	this->desireTorque.tDes[0]*=config.DESIRE_CONDITION_TORQUE_RATIO;
 	this->desireTorque.tDes[1]*=config.DESIRE_CONDITION_TORQUE_RATIO;
 	this->desireTorque.tDes[2]*=config.DESIRE_CONDITION_TORQUE_RATIO;
@@ -89,14 +100,14 @@ void ControlAllocator::process(DesireCondition d)
 			d.tDes[i]=d.tDes[i]>0?config.DESIRE_CONDITION_TORQUE_MAX:-config.DESIRE_CONDITION_TORQUE_MAX;
 		}
 	}
-	this->propData.fProp[0]=-0.295753175473055*d.fDes[0]+0.079246824526945*d.fDes[1]+0.216506350946110*d.fDes[2]+0.430689263733398*d.tDes[0]-1.607354214527472*d.tDes[1]+1.176664950794075*d.tDes[2];
-	this->propData.fProp[1]=0.079246824526945*d.fDes[0]+0.295753175473055*d.fDes[1]-0.216506350946110*d.fDes[2]-1.607354214527472*d.tDes[0]-0.430689263733398*d.tDes[1]-1.176664950794075*d.tDes[2];
-	this->propData.fProp[2]=-0.079246824526945*d.fDes[0]-0.295753175473055*d.fDes[1]-0.216506350946110*d.fDes[2]+1.607354214527472*d.tDes[0]+0.430689263733398*d.tDes[1]-1.176664950794075*d.tDes[2];
-	this->propData.fProp[3]=0.295753175473055*d.fDes[0]-0.079246824526945*d.fDes[1]+0.216506350946110*d.fDes[2]-0.430689263733398*d.tDes[0]+1.607354214527472*d.tDes[1]+1.176664950794075*d.tDes[2];
-	this->propData.fProp[4]=0.295753175473055*d.fDes[0]-0.079246824526945*d.fDes[1]+0.216506350946110*d.fDes[2]+0.430689263733398*d.tDes[0]-1.607354214527472*d.tDes[1]-1.176664950794075*d.tDes[2];
-	this->propData.fProp[5]=-0.079246824526945*d.fDes[0]-0.295753175473055*d.fDes[1]-0.216506350946110*d.fDes[2]-1.607354214527472*d.tDes[0]-0.430689263733398*d.tDes[1]+1.176664950794075*d.tDes[2];
-	this->propData.fProp[6]=0.079246824526945*d.fDes[0]+0.295753175473055*d.fDes[1]-0.216506350946110*d.fDes[2]+1.607354214527472*d.tDes[0]+0.430689263733398*d.tDes[1]+1.176664950794075*d.tDes[2];
-	this->propData.fProp[7]=-0.295753175473055*d.fDes[0]+0.079246824526945*d.fDes[1]+0.216506350946110*d.fDes[2]-0.430689263733398*d.tDes[0]+1.607354214527472*d.tDes[1]-1.176664950794075*d.tDes[2];
+	this->propData.fProp[0]=-0.295753*d.fDes[0]+0.079246*d.fDes[1]+0.216506*d.fDes[2]+0.430689*d.tDes[0]-1.607354*d.tDes[1]+1.176664*d.tDes[2];
+	this->propData.fProp[1]=0.079246*d.fDes[0]+0.29575317*d.fDes[1]-0.216506*d.fDes[2]-1.607354*d.tDes[0]-0.4306892*d.tDes[1]-1.176664*d.tDes[2];
+	this->propData.fProp[2]=-0.079246*d.fDes[0]-0.295753*d.fDes[1]-0.216506*d.fDes[2]+1.607354*d.tDes[0]+0.430689*d.tDes[1]-1.176664*d.tDes[2];
+	this->propData.fProp[3]=0.295753*d.fDes[0]-0.0792468*d.fDes[1]+0.216506*d.fDes[2]-0.430689*d.tDes[0]+1.607354*d.tDes[1]+1.176664*d.tDes[2];
+	this->propData.fProp[4]=0.295753*d.fDes[0]-0.0792468*d.fDes[1]+0.216506*d.fDes[2]+0.430689*d.tDes[0]-1.607354*d.tDes[1]-1.176664*d.tDes[2];
+	this->propData.fProp[5]=-0.079246*d.fDes[0]-0.2957531*d.fDes[1]-0.216506*d.fDes[2]-1.607354*d.tDes[0]-0.430689*d.tDes[1]+1.176664*d.tDes[2];
+	this->propData.fProp[6]=0.079246*d.fDes[0]+0.2957531*d.fDes[1]-0.2165063*d.fDes[2]+1.607354*d.tDes[0]+0.430689*d.tDes[1]+1.176664*d.tDes[2];
+	this->propData.fProp[7]=-0.295753*d.fDes[0]+0.0792468*d.fDes[1]+0.216506*d.fDes[2]-0.430689*d.tDes[0]+1.607354*d.tDes[1]-1.176664*d.tDes[2];
 }
 
 
