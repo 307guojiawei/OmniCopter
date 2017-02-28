@@ -23,8 +23,14 @@ void InterruptService()
 		}
 		lastTime=now;
 	}
-}
-
+}/*
+void Serial1Event()
+{
+	while(SERIALNUM.available())
+	{
+		config.decode(SERIALNUM.read());
+	}
+}*/
 //The setup function is called once at startup of the sketch
 void setup()
 {
@@ -34,7 +40,7 @@ void setup()
 	loger.setDebugMode(true);
 #endif
 	loger.init();
-	loger.setFreq(12);
+	loger.setFreq(7);
 	attachInterrupt(PPM_INT,InterruptService,CHANGE);
 }
 
@@ -53,11 +59,13 @@ void loop()
 #endif
 
 
-
+//	omniCopter.desiredBodyRate.rollRate=0;
+//	omniCopter.desiredBodyRate.pitchRate=0;
+//	omniCopter.desiredBodyRate.yawRate=0;
 	omniCopter.attitudeProcess();
 
 
-	for(int i=0;i<INNER_OUTER_RATIO;i++)
+	for(int i=0;i<config.INNER_OUTER_RATIO;i++)
 	{
 		omniCopter.bodyRateProcess();
 		omniCopter.positionProcess();

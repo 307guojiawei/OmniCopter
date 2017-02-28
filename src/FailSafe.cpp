@@ -50,6 +50,11 @@ void FailSafe::safeToArm(OmniCopter o)
 		{
 			digitalWrite(LED_BUILTIN,LOW);
 		}
+		while(SERIALNUM.available())
+		{
+			config.decode(SERIALNUM.read());
+			//digitalWrite(LED_BUILTIN,HIGH);
+		}
 	}while(disArm||outOfControl);
 
 }

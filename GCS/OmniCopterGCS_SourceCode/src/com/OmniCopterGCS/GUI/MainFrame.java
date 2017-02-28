@@ -6,6 +6,7 @@ import gnu.io.SerialPortEventListener;
 
 import java.awt.EventQueue;
 
+import javax.jws.Oneway;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -40,6 +41,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import javax.swing.JTextField;
@@ -81,6 +84,9 @@ public class MainFrame extends Thread
 	private File flightInfo;
 	private PrintWriter out;
 	private flightRecorder recorder;
+	private InputStream is;
+	private OutputStream os;
+	private boolean onFocus=true;
 
 	/**
 	 * Launch the application.
@@ -121,9 +127,22 @@ public class MainFrame extends Thread
 		serialPortsModel=new SerialPortsModel();
 		
 		frmOmnicopterGcs = new JFrame();
+		frmOmnicopterGcs.setResizable(false);
+		frmOmnicopterGcs.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				onFocus=true;
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				onFocus=false;
+			}
+		});
+		
 		frmOmnicopterGcs.setTitle("OmniCopter GCS");
 		frmOmnicopterGcs.setBounds(100, 100, 570, 450);
 		frmOmnicopterGcs.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		frmOmnicopterGcs.setJMenuBar(menuBar);
@@ -174,6 +193,22 @@ public class MainFrame extends Thread
 		});
 		menu_1.add(menuItem_1);
 		
+		JMenuItem menuItem_3 = new JMenuItem("\u6253\u5F00\u53C2\u6570\u8C03\u8BD5\u5668");
+		menuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(serialPort!=null)
+				{
+					serialPort.removeEventListener();
+					serialPort.close();
+				}
+				
+				AttributeSetting attributeSetting=new AttributeSetting();
+				attributeSetting.excute();
+				
+			}
+		});
+		menu_1.add(menuItem_3);
+		
 		JPanel panel = new JPanel();
 		frmOmnicopterGcs.getContentPane().add(panel, BorderLayout.SOUTH);
 		
@@ -208,6 +243,12 @@ public class MainFrame extends Thread
 						{								
 							try
 							{
+								is=serialPort.getInputStream();
+								os=serialPort.getOutputStream();
+								if(!onFocus)
+								{
+									return;
+								}
 								Scanner input=new Scanner(serialPort.getInputStream());
 								String add;
 								boolean newLine=false;
@@ -373,6 +414,19 @@ public class MainFrame extends Thread
 				
 			}
 		});
+		
+		JButton closeSerial = new JButton("\u5173\u95ED");
+		closeSerial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(serialPort!=null)
+				{
+					serialPort.removeEventListener();
+					serialPort.close();
+				}
+				
+			}
+		});
+		panel.add(closeSerial);
 		panel.add(flightRecorderButton);
 		uavInfo = new JTextPane();
 		uavInfo.setEditable(false);
@@ -560,26 +614,7 @@ public class MainFrame extends Thread
 	
 
 }
-class SerialPortsModel
-{
-	private DefaultComboBoxModel<String> defaultModel;
-	public SerialPortsModel()
-	{
-		defaultModel=new DefaultComboBoxModel<String>(new String[]{"空"});// TODO 自动生成的构造函数存根
-	}
-	public void refresh(ArrayList<String> commPorts)
-	{
-		defaultModel.removeAllElements();
-		for(String buf:commPorts)
-		{
-			defaultModel.addElement(buf);
-		}		
-	}
-	public DefaultComboBoxModel<String> getModel()
-	{
-		return this.defaultModel;
-	}
-}
+
 class flightRecorder
 {
 	private PrintWriter out;

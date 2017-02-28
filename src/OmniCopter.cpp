@@ -11,7 +11,7 @@ void OmniCopter::init()
 	pinMode(PROP_6,OUTPUT);
 	pinMode(PROP_7,OUTPUT);
 	pinMode(PROP_8,OUTPUT);
-
+	//config.loadConfig();
 
 	this->sensor.sensorInit();
 	this->escDriver.escInit();
@@ -25,7 +25,7 @@ void OmniCopter::getRawInput(struct Input_Raw* input,int* RC1)
 	int buf[7];
 	for(int j=0;j<7;j++)
 	{
-		if(abs(RC1[j]-lastRC[j])>=RC_PERCISION)
+		if(abs(RC1[j]-lastRC[j])>=config.RC_PERCISION)
 		{
 			buf[j]=RC1[j];
 			lastRC[j]=RC1[j];
