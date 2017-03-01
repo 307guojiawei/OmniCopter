@@ -49,10 +49,12 @@ class OmniCopter
 	public:
 		Input_Converted convertedInput;
 		Input_Raw input;
+    Input_Raw rawInput;
 		Sensor sensor;
 		int* RC;
 
 		BodyRate desiredBodyRate;
+    Angle angleErrorCollection, nowAngle, lastAngle;
 		DesireCondition desiredCondition;
 		PropData propData;
 
@@ -75,6 +77,10 @@ class OmniCopter
 		void getRawInput(Input_Raw* input,int* RC1);	//获得接收机输入的初始数据
 		void getRcInput(int* RC1);		//获得转换成四元数的接收机输入数据
 		void getRcValue(int*);
+
+    void getAngle(Angle angle);
+    void collectAngleError();
+    void cleanAngleErrorcollection();
 };
 
 
