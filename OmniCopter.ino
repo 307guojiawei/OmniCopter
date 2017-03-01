@@ -40,7 +40,7 @@ void setup()
 	loger.setDebugMode(true);
 #endif
 	loger.init();
-	loger.setFreq(12);
+	loger.setFreq(7);
 	attachInterrupt(PPM_INT,InterruptService,CHANGE);
 }
 
@@ -59,7 +59,9 @@ void loop()
 #endif
 
 
-
+//	omniCopter.desiredBodyRate.rollRate=0;
+//	omniCopter.desiredBodyRate.pitchRate=0;
+//	omniCopter.desiredBodyRate.yawRate=0;
 	omniCopter.attitudeProcess();
 
 

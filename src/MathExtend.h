@@ -40,10 +40,10 @@ public:
 	Quaternion operator - (Quaternion &b)
 	{
 		Quaternion ans;
-		ans.q[0]=this->q[0]+b.q[0];
-		ans.q[1]=this->q[1]+b.q[1];
-		ans.q[2]=this->q[2]+b.q[2];
-		ans.q[3]=this->q[3]+b.q[3];
+		ans.q[0]=this->q[0]-b.q[0];
+		ans.q[1]=this->q[1]-b.q[1];
+		ans.q[2]=this->q[2]-b.q[2];
+		ans.q[3]=this->q[3]-b.q[3];
 		return ans;
 	}
 	Quaternion operator * (Quaternion &b)	//四元数相乘

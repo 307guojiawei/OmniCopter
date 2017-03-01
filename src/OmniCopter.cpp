@@ -11,7 +11,7 @@ void OmniCopter::init()
 	pinMode(PROP_6,OUTPUT);
 	pinMode(PROP_7,OUTPUT);
 	pinMode(PROP_8,OUTPUT);
-	config.loadConfig();
+	//config.loadConfig();
 
 	this->sensor.sensorInit();
 	this->escDriver.escInit();
