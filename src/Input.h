@@ -14,7 +14,7 @@
 //结构体定义
 struct Input_Raw	//接收机输入的原始数据
 {
-	int Roll_Max[3]={180,180,180};	//测量时转换的最大范围-Roll_Max至Roll_Max
+	int Roll_Max[3]={90,90,90};	//测量时转换的最大范围-Roll_Max至Roll_Max
 	int Move_Max[3]={10,10,30};	//测量时位移转换的最大范围
 	double Roll[3];
 	double Move[3];
