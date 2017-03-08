@@ -29,13 +29,13 @@ Input_Converted Input_Converted::getCompleteInput(Sensor_Raw sensorRaw)
 	double q1=sensorRaw.bodyQuaternion.q[1];
 	double q2=sensorRaw.bodyQuaternion.q[2];
 	double q3=sensorRaw.bodyQuaternion.q[3];
-
+	ans.Move[0]=fx;
+	ans.Move[1]=fy;
+	ans.Move[2]=fz;
+/*
 	ans.Move[0]=(q0*q0+q1*q1-q2*q2-q3*q3)*fx+2*(q1*q2+q0*q3)*fy+2*(q1*q3-q0*q2)*fz;
 	ans.Move[1]=2*(q1*q2-q0*q3)*fx+(q0*q0-q1*q1+q2*q2-q3*q3)*fy+2*(q2*q3+q0*q1)*fz;
 	ans.Move[2]=2*(q1*q3+q0*q2)*fx+2*(q2*q3-q0*q1)*fy+(q0*q0-q1*q1-q2*q2+q3*q3)*fz;
-	/*
-	ans.Move[0]=(q0*q0+q1*q1-q2*q2-q3*q3)*fx+2*(q1*q2-q0*q3)*fy+2*(q1*q3+q0*q2)*fz;
-	ans.Move[1]=2*(q1*q2+q0*q3)*fx+(q0*q0-q1*q1+q2*q2-q3*q3)*fy+2*(q2*q3-q0*q1)*fz;
-	ans.Move[2]=2*(q1*q3-q0*q2)*fx+2*(q2*q3+q0*q1)*fy+(q0*q0-q1*q1-q2*q2+q3*q3)*fz;*/
+	*/
 	return ans;
 }

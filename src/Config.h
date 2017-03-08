@@ -53,8 +53,6 @@
 #define ESC_OFFSET_7 -16	//电调1中点值修正
 #define ESC_OFFSET_8 -30	//电调1中点值修正
 
-#define KI //积分常量
-
 //#define PERCISION 1000	//浮点与整型转换精确度
 //#define RC_PERCISION 12	//rc读取值的浮动范围
 //#define ESC_START_POINT	20	//比电调中点值的绝对值大于多少时开始运动
@@ -68,7 +66,7 @@
 //#define TATT 0.5		//出现在公式19中，外环时间常数，倒数看作p参数
 //#define	TRATE 7.0		//出现在公式21中，内环时间常数，倒数看作p参数
 //#define J 0.023433			//出现在公式21中，转动惯量
-//#define INNER_OUTER_RATIO 9	//控制环中内外环运算比
+//#define INNER_OUTER_RATIO 10	//控制环中内外环运算比
 //#define DESIRE_BODY_RATE_RATIO 15.0	//外环向内环输出的控制量的增益
 //#define DESIRE_CONDITION_FORCE_RATIO 2.0	//内环向控制分配输出的力的增益
 //#define DESIRE_CONDITION_TORQUE_RATIO 34.0	//内环向控制分配输出的力矩的增益
@@ -92,7 +90,7 @@ public:
 	double DESIRE_BODY_RATE_RATIO= 1.0;	//外环向内环输出的控制量的增益
 	double DESIRE_CONDITION_FORCE_RATIO= 1.0;	//内环向控制分配输出的力的增益
 	double DESIRE_CONDITION_TORQUE_RATIO= 6.0;	//内环向控制分配输出的力矩的增益
-	double FEED_FORWARD_RATIO=	1.0;		//前馈增益
+	double FEED_FORWARD_RATIO=	5.0;		//前馈增益
 
 	void setDesireBodyRateRatio(double desireBodyRateRatio = 15.0) {
 		DESIRE_BODY_RATE_RATIO = desireBodyRateRatio;
