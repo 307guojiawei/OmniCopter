@@ -5,7 +5,9 @@
  *      Author: jiawei
  *      Description:保存各种调试参数
  */
-
+#include <inttypes.h>
+#include "Pozyx_definitions.h"
+#include "Pozyx.h"
 #ifndef LIBRARIES_OMNICOPTER_CONFIG_H_
 #define LIBRARIES_OMNICOPTER_CONFIG_H_
 /*
@@ -91,6 +93,24 @@ public:
 	double DESIRE_CONDITION_FORCE_RATIO= 1.0;	//内环向控制分配输出的力的增益
 	double DESIRE_CONDITION_TORQUE_RATIO= 6.0;	//内环向控制分配输出的力矩的增益
 	double FEED_FORWARD_RATIO=	1.0;		//前馈增益
+	double P_KP = 1.0; //位置控制P参数
+	double P_KI = 1.0; //位置控制I参数
+	double P_KD = 1.0; //位置控制D参数
+	double g_GRAVITY = 9.8;  //位置控制重力加速度
+
+	/*parameters for Pozyx config*/
+	uint16_t remote_id = 0x6000;                            // set this to the ID of the remote device
+	bool remote = false;                                    // set this to true to use the remote ID
+	boolean use_processing = false;                         // set this to true to output data for the processing sketch
+	uint8_t num_anchors = 4;                                    // the number of anchors
+	uint16_t anchors[4] = {0x6003, 0x6042, 0x603D, 0x607C};     // the network id of the anchors: change these to the network ids of your anchors.
+	int32_t anchors_x[4] = {3740, -4060, 50, -240};               // anchor x-coorindates in mm
+	int32_t anchors_y[4] = {-2020,-2020,1160,3780};                  // anchor y-coordinates in mm
+	int32_t heights[4] = {1000, 1000, 2930, 570};              // anchor z-coordinates in mm
+	uint8_t algorithm = POZYX_POS_ALG_UWB_ONLY;             // positioning algorithm to use
+	uint8_t dimension = POZYX_3D;                           // positioning dimension
+	int32_t height = 1000;                                  // height of device, required in 2.5D positioning
+
 
 	void setDesireBodyRateRatio(double desireBodyRateRatio = 15.0) {
 		DESIRE_BODY_RATE_RATIO = desireBodyRateRatio;

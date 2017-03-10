@@ -127,3 +127,16 @@ void Log::showEscOutput(OmniCopter o)
 		SERIALNUM.print(o.escDriver.prop[7]);SERIALNUM.println("# ");
 	}
 }
+
+void Log::showPosition(OmniCopter o)
+{
+	if(!debugEnable)return;
+	if(debugEnable&&showEnable)
+	{
+		SERIALNUM.print("Position: ");
+		SERIALNUM.print(o.sensor.sensorRaw.position.x);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.position.y);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.position.z);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.positionupdate);SERIALNUM.println("# ");//本次数据是否更新
+	}
+}
