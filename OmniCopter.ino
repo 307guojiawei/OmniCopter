@@ -60,12 +60,8 @@ void loop()
 	loger.showSensor(omniCopter);
 #endif
 
-
-//	omniCopter.desiredBodyRate.rollRate=0;
-//	omniCopter.desiredBodyRate.pitchRate=0;
-//	omniCopter.desiredBodyRate.yawRate=0;
 	omniCopter.attitudeProcess();
-
+  omniCopter.positionProcess();
 
 	for (int i=0; i <= config.INNER_OUTER_RATIO; i++) {
     if (i == config.INNER_OUTER_RATIO) {
@@ -75,7 +71,6 @@ void loop()
     }
 
 		omniCopter.bodyRateProcess();
-		omniCopter.positionProcess();
 
 		omniCopter.controlAllocateProcess();
 

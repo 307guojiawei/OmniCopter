@@ -94,6 +94,7 @@ void OmniCopter::bodyRateProcess()
 
 void OmniCopter::positionProcess()
 {
+	this->sensor.getPosition();
 	this->positionController.process(this->convertedInput,this->sensor.sensorRaw,this->desiredCondition);
 	this->desiredCondition=this->positionController.getDesireCondition();
 }

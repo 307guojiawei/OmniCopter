@@ -82,9 +82,29 @@ DesireCondition PositionController::getDesireCondition()
 void PositionController::process(Input_Converted input,Sensor_Raw sensorData,DesireCondition desireInput)
 {
 	this->desireCondition=desireInput;
-	this->desireCondition.fDes[0]=input.Move[0];
-	this->desireCondition.fDes[1]=input.Move[1];
-	this->desireCondition.fDes[2]=input.Move[2];
+	double q0=sensorData.bodyQuaternion.q[0];
+	double q1=sensorData.bodyQuaternion.q[1];
+	double q2=sensorData.bodyQuaternion.q[2];
+	double q3=sensorData.bodyQuaternion.q[3];
+	static double px_inte=0;
+	static double py_inte=0;
+	static double pz_inte=0;
+	static double px_err_last=0;
+	static double py_err_last=0;
+	static double pz_err_last=0;
+	double px_err=sensorData.position.x-input.Move[0];
+	double py_err=sensorData.position.y-input.Move[1];
+	double pz_err=sensorData.position.z-input.Move[2];
+
+	double fx = config.P_KP*px_err + config.P_KI*px_inte + config.P_KD*(px_err-px_err_last);
+	double fy = config.P_KP*py_err + config.P_KI*py_inte + config.P_KD*(py_err-py_err_last);
+	double fz = config.g_GRAVITY+config.P_KP*pz_err + config.P_KI*pz_inte + config.P_KD*(pz_err-pz_err_last);
+
+	this->desireCondition.fDes[0]=(q0*q0+q1*q1-q2*q2-q3*q3)*fx+2*(q1*q2+q0*q3)*fy+2*(q1*q3-q0*q2)*fz;
+	this->desireCondition.fDes[1]=2*(q1*q2-q0*q3)*fx+(q0*q0-q1*q1+q2*q2-q3*q3)*fy+2*(q2*q3+q0*q1)*fz;
+	this->desireCondition.fDes[2]=2*(q1*q3+q0*q2)*fx+2*(q2*q3-q0*q1)*fy+(q0*q0-q1*q1-q2*q2+q3*q3)*fz;
+
+
 	this->desireCondition.fDes[0]*=config.DESIRE_CONDITION_FORCE_RATIO;
 	this->desireCondition.fDes[1]*=config.DESIRE_CONDITION_FORCE_RATIO;
 	this->desireCondition.fDes[2]*=config.DESIRE_CONDITION_FORCE_RATIO;
@@ -117,5 +137,3 @@ void ControlAllocator::process(DesireCondition d)
 	this->propData.fProp[6]=0.079246*d.fDes[0]+0.2957531*d.fDes[1]-0.2165063*d.fDes[2]+1.607354*d.tDes[0]+0.430689*d.tDes[1]+1.176664*d.tDes[2];
 	this->propData.fProp[7]=-0.295753*d.fDes[0]+0.0792468*d.fDes[1]+0.216506*d.fDes[2]-0.430689*d.tDes[0]+1.607354*d.tDes[1]-1.176664*d.tDes[2];
 }
-
-

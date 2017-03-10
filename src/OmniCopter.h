@@ -85,5 +85,3 @@ class OmniCopter
 
 
 #endif
-
-

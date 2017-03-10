@@ -20,6 +20,7 @@ public:
 	void showEscOutput(OmniCopter omniCopter);			//输出控制电调的pwm脉宽
 	void showForce(OmniCopter omniCopter);				//输出控制力和力矩
 	void showFreq(OmniCopter omniCopter);				//输出外环控制频率
+	void showPosition(OmniCopter omniCopter);
 	void init();
 	void oneLoop();					//记录一次循环的状态
 private:

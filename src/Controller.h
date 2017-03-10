@@ -50,6 +50,7 @@ public:
 	DesireCondition getDesireCondition();
 	void process(Input_Converted input,Sensor_Raw sensorData,DesireCondition desireInput);
 };
+
 class ControlAllocator	//动力分配模型，用于将DesireCondition转换为PropData
 {
 private:
