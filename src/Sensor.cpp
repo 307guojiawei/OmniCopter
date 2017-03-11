@@ -7,6 +7,10 @@
 
 #include "Omnicopter.h"
 
+kalman_state kalman_state_0;
+kalman_state kalman_state_1;
+kalman_state kalman_state_2;
+
 void Sensor::sensorInit()	//传感器初始化
 {
 	SERIALNUM.begin(DEBUG_SERIAL_RATE);
@@ -19,10 +23,19 @@ void Sensor::sensorInit()	//传感器初始化
 		abort();
 	}
 	Pozyx.clearDevices(NULL);
-	setAnchorsManual();
+	this->setAnchorsManual();
 	delay(2000);
-	SERIALNUM.println(F("Starting positioning: "));
+
+	// set dimension and algorithm
+	uint8_t alg_options = (config.dimension<<4) | config.algorithm;
+	Pozyx.regWrite(POZYX_POS_ALG, &alg_options, 1);
+
+	//SERIALNUM.println(F("Starting positioning: "));
 	SERIALNUM.end();
+
+	kalman_init(&kalman_state_0, 0.0, 0.0);
+	kalman_init(&kalman_state_1, 0.0, 0.0);
+	kalman_init(&kalman_state_2, 0.0, 0.0);
 }
 
 void Sensor::getSensorData()	//获取传感器数据
@@ -61,20 +74,12 @@ void Sensor::getSensorRate()
 
 int Sensor::callPositioning()
 {
+/*
 	assert(&(this->sensorRaw.position)!= NULL);
   assert( (config.algorithm == POZYX_POS_ALG_UWB_ONLY ) || (config.algorithm == POZYX_POS_ALG_LS) );
   assert( (config.dimension == POZYX_3D ) || (config.dimension == POZYX_2D) || (config.dimension == POZYX_2_5D) );
-
+*/
 	int status;
-
-	// set dimension and algorithm
-  uint8_t alg_options = (config.dimension<<4) | config.algorithm;
-  status = Pozyx.regWrite(POZYX_POS_ALG, &alg_options, 1);
-
-  // in 2.5D mode, we also supply the height
-  if(config.dimension == POZYX_2_5D) {
-    status = Pozyx.regWrite(POZYX_POS_Z, (uint8_t*)&config.height, sizeof(int32_t));
-  }
 
   // trigger positioning
   uint8_t int_status = 0;
@@ -96,6 +101,7 @@ int Sensor::readPositioning(coordinates_t *position)
 			// Please read out the register POZYX_ERRORCODE to obtain more information about the error
 			return POZYX_FAILURE;
 		}else{
+
 			status = Pozyx.getCoordinates(position);
 			return POZYX_SUCCESS;
 		}
@@ -106,8 +112,31 @@ int Sensor::readPositioning(coordinates_t *position)
 
 int Sensor::getPosition()
 {
+	/*static int cur =0;
+	static int  pos_x_list[POS_FLITER_NUM]={0};
+	static int  pos_y_list[POS_FLITER_NUM]={0};
+	static int  pos_z_list[POS_FLITER_NUM]={0};
+*/
 	if(this->calledPositioning){
+
 		this->positionupdate=readPositioning(&(this->sensorRaw.position));
+
+		this->sensorRaw.position.x=kalman_filter(&kalman_state_0,this->sensorRaw.position.x);
+		this->sensorRaw.position.y=kalman_filter(&kalman_state_1,this->sensorRaw.position.y);
+		this->sensorRaw.position.z=kalman_filter(&kalman_state_2,this->sensorRaw.position.z);
+
+/*
+		{
+			pos_x_list[cur]=this->sensorRaw.position.x;
+			pos_y_list[cur]=this->sensorRaw.position.y;
+			pos_z_list[cur]=this->sensorRaw.position.z;
+			cur++;
+			if(cur==POS_FLITER_NUM)cur=0;
+			this->sensorRaw.position.x=average(pos_x_list,POS_FLITER_NUM);
+			this->sensorRaw.position.y=average(pos_y_list,POS_FLITER_NUM);
+			this->sensorRaw.position.z=average(pos_z_list,POS_FLITER_NUM);
+		}
+*/
 		callPositioning();
 		this->calledPositioning=1;
 		return POZYX_SUCCESS;
@@ -121,7 +150,7 @@ int Sensor::getPosition()
 }
 
 
-void setAnchorsManual()
+void Sensor::setAnchorsManual()
 {
 	for(int i = 0; i < config.num_anchors; i++){
 		device_coordinates_t anchor;
@@ -132,4 +161,43 @@ void setAnchorsManual()
 		anchor.pos.z = config.heights[i];
 		Pozyx.addDevice(anchor, NULL);
 	}
+}
+
+void Sensor::setPosInit(){
+	this->pos_init[0]=this->sensorRaw.position.x;
+	this->pos_init[1]=this->sensorRaw.position.y;
+	this->pos_init[2]=this->sensorRaw.position.z;
+}
+
+double average(int * list,int num){
+	double sum=0;
+	for(int i=0;i<num;i++){
+		sum+=*(list+i);
+	}
+	sum=(sum*1.0/num);
+	return sum;
+}
+
+void kalman_init(kalman_state *state,float init_x,  float init_p)
+{
+    state->x = init_x;
+    state->p = init_p;
+    state->A = 1;
+    state->H = 1;
+    state->q = 5;//10e-6;  /* predict noise convariance */
+    state->r = 120;//10e-5;  /* measure error convariance */
+}
+
+float kalman_filter(kalman_state *state, float z_measure)
+{
+    /* Predict */
+    state->x = state->A * state->x;
+    state->p = state->A * state->A * state->p + state->q;  /* p(n|n-1)=A^2*p(n-1|n-1)+q */
+
+    /* Measurement */
+    state->gain = state->p * state->H / (state->p * state->H * state->H + state->r);
+    state->x = state->x + state->gain * (z_measure - state->H * state->x);
+    state->p = (1 - state->gain * state->H) * state->p;
+
+    return state->x;
 }

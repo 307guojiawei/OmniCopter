@@ -10,7 +10,6 @@
 #define CONTROLLER_H
 #include <MathExtend.h>
 
-
 class DesireCondition	//用于保存控制量（扭矩和力），用于传给控制分配模型
 {
 public:
@@ -26,8 +25,9 @@ public:
 class AttitudeController		//控制器，包括姿态角的外环控制,输出Ωdes给内环控制器
 {
 private:
-	BodyRate desireCondition;
+	//BodyRate desireCondition;
 public:
+	BodyRate desireCondition;
 	BodyRate getDesireBodyRate();
 	void process(Input_Converted desireInput,Sensor_Raw sensorData);	//根据输入的指令和传感器姿态数据更新并控制DesireCondition中的数据
 
@@ -36,8 +36,9 @@ public:
 class BodyRateController	//角速度控制器，输入Ωdes，输出tdes给动力分配模型，内环控制器比外环循环次数更多
 {
 private:
-	DesireCondition desireTorque;
+	//DesireCondition desireTorque;
 public:
+	DesireCondition desireTorque;
 	DesireCondition getDesireTorque();	//获得tdes，需要继续传入位置控制器完成位置控制操作
 	void process(BodyRate desireBodyRate,Sensor_Raw sensorData);	//根据输入的角速度和传感器数据解算tdes
 };
@@ -45,10 +46,11 @@ public:
 class PositionController		//位置控制器，通过指令和传感器数据将结果添加到传入的DesireCondition中后传入动力分配模型
 {
 private:
-	DesireCondition desireCondition;
+	//DesireCondition desireCondition;
 public:
+	DesireCondition desireCondition;
 	DesireCondition getDesireCondition();
-	void process(Input_Converted input,Sensor_Raw sensorData,DesireCondition desireInput);
+	void process(Input_Converted input,Sensor_Raw sensorData,DesireCondition desireInput,Sensor);
 };
 
 class ControlAllocator	//动力分配模型，用于将DesireCondition转换为PropData

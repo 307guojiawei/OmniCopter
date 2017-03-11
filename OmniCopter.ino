@@ -56,6 +56,7 @@ void loop()
 #ifdef DEBUG_MODE
 	loger.showRcInput(omniCopter);
 	loger.showSensor(omniCopter);
+  loger.showPosition(omniCopter);
 #endif
 
 	omniCopter.attitudeProcess();
@@ -70,7 +71,7 @@ void loop()
 		omniCopter.excute();
 	}
 	failSafe.safeToArm(omniCopter);
-
+ 
 #ifdef DEBUG_MODE
 	loger.showForce(omniCopter);
 	loger.showEscOutput(omniCopter);

@@ -83,14 +83,18 @@ void OmniCopter::bodyRateProcess()
 {
 	this->sensor.getSensorRate();
 	this->bodyRateController.process(this->desiredBodyRate,this->sensor.sensorRaw);
-	this->desiredCondition=this->bodyRateController.getDesireTorque();
-}
+	this->desiredCondition.tDes[0]=this->bodyRateController.desireTorque.tDes[0];
+	this->desiredCondition.tDes[1]=this->bodyRateController.desireTorque.tDes[1];
+	this->desiredCondition.tDes[2]=this->bodyRateController.desireTorque.tDes[2];}
 
 void OmniCopter::positionProcess()
 {
 	this->sensor.getPosition();
-	this->positionController.process(this->convertedInput,this->sensor.sensorRaw,this->desiredCondition);
-	this->desiredCondition=this->positionController.getDesireCondition();
+	this->positionController.process(this->convertedInput,this->sensor.sensorRaw,this->desiredCondition,this->sensor);
+
+	this->desiredCondition.fDes[0]=this->positionController.desireCondition.fDes[0];
+	this->desiredCondition.fDes[1]=this->positionController.desireCondition.fDes[1];
+	this->desiredCondition.fDes[2]=this->positionController.desireCondition.fDes[2];
 }
 
 void OmniCopter::controlAllocateProcess()

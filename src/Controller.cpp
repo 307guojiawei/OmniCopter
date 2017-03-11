@@ -6,6 +6,8 @@
  */
 #include "OmniCopter.h"
 #include "Controller.h"
+
+
 BodyRate AttitudeController::getDesireBodyRate()
 {
 	return this->desireCondition;
@@ -71,7 +73,7 @@ DesireCondition PositionController::getDesireCondition()
 	return this->desireCondition;
 }
 
-void PositionController::process(Input_Converted input,Sensor_Raw sensorData,DesireCondition desireInput)
+void PositionController::process(Input_Converted input,Sensor_Raw sensorData,DesireCondition desireInput,Sensor sensor)
 {
 	this->desireCondition=desireInput;
 	double q0=sensorData.bodyQuaternion.q[0];
@@ -84,18 +86,25 @@ void PositionController::process(Input_Converted input,Sensor_Raw sensorData,Des
 	static double px_err_last=0;
 	static double py_err_last=0;
 	static double pz_err_last=0;
-	double px_err=sensorData.position.x-input.Move[0];
-	double py_err=sensorData.position.y-input.Move[1];
-	double pz_err=sensorData.position.z-input.Move[2];
+	double px_err=input.Move[0]-(sensorData.position.x-sensor.pos_init[0]);
+	double py_err=input.Move[1]-(sensorData.position.y-sensor.pos_init[1]);
+	double pz_err=input.Move[2]-(sensorData.position.z-sensor.pos_init[2]);
 
-	double fx = config.P_KP*px_err + config.P_KI*px_inte + config.P_KD*(px_err-px_err_last);
-	double fy = config.P_KP*py_err + config.P_KI*py_inte + config.P_KD*(py_err-py_err_last);
-	double fz = config.g_GRAVITY+config.P_KP*pz_err + config.P_KI*pz_inte + config.P_KD*(pz_err-pz_err_last);
+	double fx =config.mess*( config.P_KP*px_err + config.P_KI*px_inte + config.P_KD*(px_err-px_err_last) )/100.0;
+	double fy =config.mess*( config.P_KP*py_err + config.P_KI*py_inte + config.P_KD*(py_err-py_err_last) )/100.0;
+
+	//double fz =config.mess*( config.g_GRAVITY+(config.P_KP*pz_err + config.P_KI*pz_inte + config.P_KD*(pz_err-pz_err_last))/100.0);
+	double fz =input.Move[2]*3/100.0;
+	px_err_last=px_err;
+	py_err_last=py_err;
+	pz_err_last=pz_err;
+	px_inte+=px_err;
+	py_inte+=py_err;
+	pz_inte+=pz_err;
 
 	this->desireCondition.fDes[0]=(q0*q0+q1*q1-q2*q2-q3*q3)*fx+2*(q1*q2+q0*q3)*fy+2*(q1*q3-q0*q2)*fz;
 	this->desireCondition.fDes[1]=2*(q1*q2-q0*q3)*fx+(q0*q0-q1*q1+q2*q2-q3*q3)*fy+2*(q2*q3+q0*q1)*fz;
 	this->desireCondition.fDes[2]=2*(q1*q3+q0*q2)*fx+2*(q2*q3-q0*q1)*fy+(q0*q0-q1*q1-q2*q2+q3*q3)*fz;
-
 
 	this->desireCondition.fDes[0]*=config.DESIRE_CONDITION_FORCE_RATIO;
 	this->desireCondition.fDes[1]*=config.DESIRE_CONDITION_FORCE_RATIO;
@@ -109,6 +118,7 @@ PropData ControlAllocator::getPropData()
 
 void ControlAllocator::process(DesireCondition d)
 {
+
 	for(int i=0;i<3;i++)
 	{
 		if(abs(d.fDes[i])>config.DESIRE_CONDITION_F_MAX)
@@ -120,6 +130,8 @@ void ControlAllocator::process(DesireCondition d)
 			d.tDes[i]=d.tDes[i]>0?config.DESIRE_CONDITION_TORQUE_MAX:-config.DESIRE_CONDITION_TORQUE_MAX;
 		}
 	}
+
+
 	this->propData.fProp[0]=-0.295753*d.fDes[0]+0.079246*d.fDes[1]+0.216506*d.fDes[2]+0.430689*d.tDes[0]-1.607354*d.tDes[1]+1.176664*d.tDes[2];
 	this->propData.fProp[1]=0.079246*d.fDes[0]+0.29575317*d.fDes[1]-0.216506*d.fDes[2]-1.607354*d.tDes[0]-0.4306892*d.tDes[1]-1.176664*d.tDes[2];
 	this->propData.fProp[2]=-0.079246*d.fDes[0]-0.295753*d.fDes[1]-0.216506*d.fDes[2]+1.607354*d.tDes[0]+0.430689*d.tDes[1]-1.176664*d.tDes[2];
