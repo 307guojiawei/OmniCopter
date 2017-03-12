@@ -1,1 +1,4 @@
-*.gch
+# Vim
+tags
+*.swp
+*.gch*.gch
