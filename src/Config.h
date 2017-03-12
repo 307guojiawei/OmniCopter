@@ -24,20 +24,20 @@
 //#define MEGA_2560	//目标单片机
 #define DEBUG_MODE	//调试模式
 #define DEBUG_SERIAL_RATE 115200
-#define SERIALNUM	Serial1	//串口对象
+#define SERIALNUM	Serial	//串口对象
+#define POS_FLITER_NUM 5
+#define PPM_INT 1	//ppm閬ユ帶淇″彿杈撳叆,鏈€间负涓柇寮曡剼瀵瑰簲鐨勪腑鏂簭鍙?
 
-#define PPM_INT 0	//ppm閬ユ帶淇″彿杈撳叆,鏈€间负涓柇寮曡剼瀵瑰簲鐨勪腑鏂簭鍙?
+#define PPM_SWITCH_PIN 3
 
-#define PPM_SWITCH_PIN 2
-
-#define PROP_1 3	//电机输出端口
-#define PROP_2 4
-#define PROP_3 5
-#define PROP_4 6
-#define PROP_5 7
-#define PROP_6 8
-#define PROP_7 9
-#define PROP_8 10
+#define PROP_1 4	//电机输出端口
+#define PROP_2 5
+#define PROP_3 6
+#define PROP_4 7
+#define PROP_5 8
+#define PROP_6 9
+#define PROP_7 10
+#define PROP_8 11
 
 
 //变量定义
@@ -95,10 +95,15 @@ public:
 	double DESIRE_CONDITION_FORCE_RATIO= 1.0;	//内环向控制分配输出的力的增益
 	double DESIRE_CONDITION_TORQUE_RATIO= 6.0;	//内环向控制分配输出的力矩的增益
 	double FEED_FORWARD_RATIO=	1.0;		//前馈增益
-	double P_KP = 1.0; //位置控制P参数
-	double P_KI = 1.0; //位置控制I参数
-	double P_KD = 1.0; //位置控制D参数
+	double P_KP = 0.3; //位置控制P参数
+	double P_KI = 0.0; //位置控制I参数
+	double P_KD = 0.0; //位置控制D参数
 	double g_GRAVITY = 9.8;  //位置控制重力加速度
+	double mess=1.4;
+
+	double pos_x_init =0;  //起飞前的初始坐标位置
+	double pos_y_init =0;
+	double pos_z_init =0;
 
 	/*parameters for Pozyx config*/
 	uint16_t remote_id = 0x6000;                            // set this to the ID of the remote device
@@ -106,9 +111,21 @@ public:
 	boolean use_processing = false;                         // set this to true to output data for the processing sketch
 	uint8_t num_anchors = 4;                                    // the number of anchors
 	uint16_t anchors[4] = {0x6003, 0x6042, 0x603D, 0x607C};     // the network id of the anchors: change these to the network ids of your anchors.
+/*	//Configure 3
+	int32_t anchors_x[4] = {2860, -3080, 50, -160};               // anchor x-coorindates in mm
+	int32_t anchors_y[4] = {-2020,-2020,1160,3780};                  // anchor y-coordinates in mm
+	int32_t heights[4] = {1000, 1000, 2930, 1300};              // anchor z-coordinates in mm
+	*/
+	//Configure 2
+	int32_t anchors_x[4] = {2860, -3080, 50, -240};               // anchor x-coorindates in mm
+	int32_t anchors_y[4] = {-2020,-2020,1160,3780};                  // anchor y-coordinates in mm
+	int32_t heights[4] = {1000, 1000, 2930, 570};              // anchor z-coordinates in mm
+
+/* //configuration 1
 	int32_t anchors_x[4] = {3740, -4060, 50, -240};               // anchor x-coorindates in mm
 	int32_t anchors_y[4] = {-2020,-2020,1160,3780};                  // anchor y-coordinates in mm
 	int32_t heights[4] = {1000, 1000, 2930, 570};              // anchor z-coordinates in mm
+*/
 	uint8_t algorithm = POZYX_POS_ALG_UWB_ONLY;             // positioning algorithm to use
 	uint8_t dimension = POZYX_3D;                           // positioning dimension
 	int32_t height = 1000;                                  // height of device, required in 2.5D positioning
@@ -199,7 +216,6 @@ private:
 	static const int eepromValid=50;	//eeprom数据有效位，50*4地址处为0x51，51*4地址处为0x15则有效
 	bool dataValid();	//验证eeprom数据是否有效
 	void setDataValid(bool status);//设置eeprom是否有效
-
 	/*
 	 * 说明：接收采用实际数值*1000表示，接收到数据后除以1000即为有效值！需要串口有效！！
 	 * 通信时序：参数设置和传递：

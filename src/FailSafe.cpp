@@ -9,6 +9,7 @@
 
 void FailSafe::safeToArm(OmniCopter o)
 {
+	extern OmniCopter omniCopter;
 	bool disArm=false;	//人为停止
 	bool outOfControl=false;	//失控
 	int* RC=o.RC;
@@ -46,6 +47,10 @@ void FailSafe::safeToArm(OmniCopter o)
 			prop.fProp[7]=0;
 			o.escDriver.excute(prop);
 			digitalWrite(LED_BUILTIN,HIGH);
+			//更新初始坐标
+			omniCopter.sensor.getPosition();
+			omniCopter.sensor.setPosInit();
+
 		}else
 		{
 			digitalWrite(LED_BUILTIN,LOW);
@@ -58,6 +63,3 @@ void FailSafe::safeToArm(OmniCopter o)
 	}while(disArm||outOfControl);
 
 }
-
-
-

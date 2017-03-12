@@ -133,10 +133,17 @@ void Log::showPosition(OmniCopter o)
 	if(!debugEnable)return;
 	if(debugEnable&&showEnable)
 	{
+		/*
+		SERIALNUM.print(o.sensor.sensorRaw.position.x);SERIALNUM.print(",");
+		SERIALNUM.print(o.sensor.sensorRaw.position.y);SERIALNUM.print(",");
+		SERIALNUM.print(o.sensor.sensorRaw.position.z-600);SERIALNUM.println(",");
+		*/
+
 		SERIALNUM.print("Position: ");
-		SERIALNUM.print(o.sensor.sensorRaw.position.x);SERIALNUM.print(" ");
-		SERIALNUM.print(o.sensor.sensorRaw.position.y);SERIALNUM.print(" ");
-		SERIALNUM.print(o.sensor.sensorRaw.position.z);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.position.x-o.sensor.pos_init[0]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.position.y-o.sensor.pos_init[1]);SERIALNUM.print(" ");
+		SERIALNUM.print(o.sensor.sensorRaw.position.z-o.sensor.pos_init[2]);SERIALNUM.print(" ");
 		SERIALNUM.print(o.sensor.positionupdate);SERIALNUM.println("# ");//本次数据是否更新
+
 	}
 }

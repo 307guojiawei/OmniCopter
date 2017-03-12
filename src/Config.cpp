@@ -8,6 +8,7 @@
 #include "Config.h"
 #include "EEPROM.h"
 
+
 bool Config::dataValid()
 {
 	char data1,data2;
@@ -166,5 +167,3 @@ void Config::encode()
 	SERIALNUM.print(desireConditionForceRatio);SERIALNUM.print(",");SERIALNUM.print("desireConditionForceRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_FORCE_RATIO);SERIALNUM.println(";");
 	SERIALNUM.print(desireConditionTorqueRatio);SERIALNUM.print(",");SERIALNUM.print("desireConditionTorqueRatio");SERIALNUM.print(",");SERIALNUM.print("d");SERIALNUM.print(",");SERIALNUM.print(DESIRE_CONDITION_TORQUE_RATIO);SERIALNUM.println(";");
 }
-
-

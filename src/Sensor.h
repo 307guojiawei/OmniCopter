@@ -32,14 +32,31 @@ public:
 	CJY901 JY901;
 	bool calledPositioning=0;
 	int positionupdate=0;
+	double pos_init[3]={0};
 	void getSensorData();	//获取传感器数据，需要驱动串口
 	void getSensorRate();
+	void setAnchorsManual();
 	int callPositioning();  //开始Positioning
 	int readPositioning(coordinates_t *position);  //读取Positioning数据
 	int getPosition(); //获取Pozyx位置数据
 	void sensorInit();		//传感器初始化，包括参数设定和串口的初始化
+	void setPosInit();
 };
 
+typedef struct{
+	float x;
+	float A;
+	float H;
+	float q;
+	float r;
+	float p;
+	float gain;
+}kalman_state;
+
 void setAnchorsManual();
+double average(int * list,int num);
+
+float kalman_filter(kalman_state *state, float z_measure);
+void kalman_init(kalman_state *state,float init_x,  float init_p);
 
 #endif /* SENSOR_H */

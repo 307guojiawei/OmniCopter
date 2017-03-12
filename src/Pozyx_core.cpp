@@ -36,7 +36,7 @@ boolean PozyxClass::waitForFlag(uint8_t interrupt_flag, int timeout_ms, uint8_t 
   {
     // in polling mode, we insert a small delay such that we don't swamp the i2c bus
     if( _mode == MODE_POLLING ){
-      delay(1);
+      //delay(1);
     }
 
     if( (_interrupt == 1) || (_mode == MODE_POLLING))
