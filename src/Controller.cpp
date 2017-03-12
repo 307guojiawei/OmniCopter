@@ -13,7 +13,7 @@ BodyRate AttitudeController::getDesireBodyRate()
 	return this->desireCondition;
 }
 
-void AttitudeController::process(Input_Converted desireInput,Sensor_Raw sensorData)
+void AttitudeController::process(Input_Converted desireInput,Sensor_Raw sensorData, Angle angleErrorCollection)
 {
 	static Quaternion qLast;
 	static bool isFirst=true;
@@ -49,6 +49,14 @@ void AttitudeController::process(Input_Converted desireInput,Sensor_Raw sensorDa
 	desireBodyRate.rollRate*=config.DESIRE_BODY_RATE_RATIO;
 	desireBodyRate.pitchRate*=config.DESIRE_BODY_RATE_RATIO;
 	desireBodyRate.yawRate*=config.DESIRE_BODY_RATE_RATIO;
+
+  //考虑积分项（角度累计误差）
+  //KI是积分常数，需要自己找到合适的值。可以在config.h里设置
+  desireBodyRate.rollRate  += KI * angleErrorCollection.roll ;
+  desireBodyRate.pitchRate += KI * angleErrorCollection.pitch;
+  desireBodyRate.yawRate   += KI * angleErrorCollection.yaw  ;
+
+
 	this->desireCondition=desireBodyRate;
 	qLast=desireInput.Roll;
 }

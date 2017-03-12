@@ -29,7 +29,7 @@ private:
 public:
 	BodyRate desireCondition;
 	BodyRate getDesireBodyRate();
-	void process(Input_Converted desireInput,Sensor_Raw sensorData);	//根据输入的指令和传感器姿态数据更新并控制DesireCondition中的数据
+	void process(Input_Converted desireInput,Sensor_Raw sensorData, Angle angleErrorCollection);	//根据输入的指令和传感器姿态数据更新并控制DesireCondition中的数据
 
 };
 

@@ -6,6 +6,7 @@ OmniCopter omniCopter;
 Log loger;
 FailSafe failSafe;
 int RC1[10]={1506,1506,1506,1506,1506,1506,1400};
+
 void InterruptService()
 {
 	static unsigned long int lastTime=0;
@@ -52,6 +53,7 @@ void loop()
 #endif
 
 	omniCopter.getCompleteInput(RC1);
+	omniCopter.getAngle(omniCopter.lastAngle);
 
 #ifdef DEBUG_MODE
 	loger.showRcInput(omniCopter);
@@ -62,14 +64,20 @@ void loop()
 	omniCopter.attitudeProcess();
   omniCopter.positionProcess();
 
-	for(int i=0;i<config.INNER_OUTER_RATIO;i++)
-	{
+	for (int i=0; i <= config.INNER_OUTER_RATIO; i++) {
+    if (i == config.INNER_OUTER_RATIO) {
+      omniCopter.cleanAngleErrorCollection();
+    } else {
+      omniCopter.collectAngleError();
+    }
+
 		omniCopter.bodyRateProcess();
 
 		omniCopter.controlAllocateProcess();
 
 		omniCopter.excute();
 	}
+
 	failSafe.safeToArm(omniCopter);
  
 #ifdef DEBUG_MODE
