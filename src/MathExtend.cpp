@@ -41,8 +41,3 @@ Quaternion Quaternion::reverse()
 	ans.q[3]=(-az)/div;
 	return ans;
 }
-
-double errorPositiveAndNegativeJudge(double std, double err) {
-  if (std < 0) err = -err;
-  return err;
-}

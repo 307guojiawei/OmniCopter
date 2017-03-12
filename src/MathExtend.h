@@ -68,6 +68,4 @@ public:
 	Quaternion createFromAngle(struct Angle angle);	//从欧拉角建立四元数
 };
 
-double errorPositiveAndNegativeJudge(double std, double err);
-
 #endif
