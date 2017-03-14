@@ -6,21 +6,42 @@
  */
 
 #include "Omnicopter.h"
-
+#include <EEPROM.h>
 kalman_state kalman_state_0;
 kalman_state kalman_state_1;
 kalman_state kalman_state_2;
 
+void(* resetFunc) (void) = 0;
+
 void Sensor::sensorInit()	//传感器初始化
 {
-	SERIALNUM.begin(DEBUG_SERIAL_RATE);
+
+		SERIALNUM.begin(DEBUG_SERIAL_RATE);
+	/*
+			RESET to make Pozyx work well
+	*/
+/*
+	int reset_flag=EEPROM.read(0);
+	if(reset_flag!=127){
+		EEPROM.write(0,127);
+		SERIALNUM.println("RESETING");
+		delay(1000);
+		resetFunc();
+		//digitalWrite(RESET_PIN,0);
+	}
+	else {
+		EEPROM.write(0,0);
+		SERIALNUM.println("PASS RESETING");
+	}
+
+*/
 	JY901.StartIIC();
 	if(Pozyx.begin()==POZYX_FAILURE)
 	{
 		SERIALNUM.println(F("ERROR: Unable to connect to POZYX shield"));
     SERIALNUM.println(F("Reset required"));
     delay(100);
-		abort();
+		//abort();
 	}
 	Pozyx.clearDevices(NULL);
 	this->setAnchorsManual();
