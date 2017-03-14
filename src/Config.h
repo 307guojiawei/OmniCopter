@@ -24,7 +24,7 @@
 //#define MEGA_2560	//目标单片机
 #define DEBUG_MODE	//调试模式
 #define DEBUG_SERIAL_RATE 115200
-#define SERIALNUM	Serial	//串口对象
+#define SERIALNUM	Serial1	//串口对象
 #define POS_FLITER_NUM 5
 #define PPM_INT 1	//ppm閬ユ帶淇″彿杈撳叆,鏈€间负涓柇寮曡剼瀵瑰簲鐨勪腑鏂簭鍙?
 
@@ -93,7 +93,7 @@ public:
 	double DESIRE_CONDITION_FORCE_RATIO= 1.0;	//内环向控制分配输出的力的增益
 	double DESIRE_CONDITION_TORQUE_RATIO= 6.0;	//内环向控制分配输出的力矩的增益
 	double FEED_FORWARD_RATIO=	1.0;		//前馈增益
-	double P_KP = 0.3; //位置控制P参数
+	double P_KP = 0.12; //位置控制P参数
 	double P_KI = 0.0; //位置控制I参数
 	double P_KD = 0.0; //位置控制D参数
 	double g_GRAVITY = 9.8;  //位置控制重力加速度
